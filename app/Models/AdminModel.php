@@ -20,4 +20,14 @@ class AdminModel extends Model
         return $table->delete();
     }
 
+
+    public function view_order(){
+        $table = $this->db->table('orders');
+        $table->select('id_order,produk.nama as produk,jumlah,produk.harga as harga,total,users.email as email,status');
+        $table->join('produk','produk.id_produk = orders.id_produk');
+        $table->join('users','users.id_user = orders.id_users');
+        $table->groupBy("id_order");
+        return $table->get()->getResultArray();
+    }
+
 }

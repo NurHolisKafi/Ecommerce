@@ -18,7 +18,7 @@
                         <a class="nav-link" href="/a/category/">Categories</a>
                     </nav>
                 </div>
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/a/order/"">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-arrow-down"></i></div>
                     Order
                 </a>

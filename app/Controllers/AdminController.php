@@ -46,7 +46,10 @@ class AdminController extends BaseController
     }
 
     public function order(){
-        return view('pages/Admin/order');
+        $result = [
+            'data' => $this->model->view_order()
+        ];
+        return view('pages/Admin/order',$result);
     }
 
     public function account(){
@@ -55,7 +58,6 @@ class AdminController extends BaseController
         ];
         return view('pages/Admin/account',$result);
     }
-
 
     //Delete
     public function DeleteUser($id){

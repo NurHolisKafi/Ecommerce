@@ -14,7 +14,6 @@ class ProdukController extends BaseController
     }
 
     public function View(){
-        
         $result = [
             'session' => $this->session,
             'validate' => $this->validation,

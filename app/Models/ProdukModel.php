@@ -12,13 +12,24 @@ class ProdukModel extends Model
         return $table->get()->getResultArray();
     }
 
+    public function view_produkByUser(){
+        $table = $this->db->table('produk');
+        $table->select('produk.id_produk,produk.nama as nama,harga,gambar.nama as gambar');
+        $table->join('gambar', 'gambar.id_produk = produk.id_produk');
+        $table->groupBy("produk.id_produk");
+        $query = $table->get()->getResultArray();
+        return $query;
+    }
+
     public function view_produk(){
         $table = $this->db->table('produk');
         $table->select('id_produk,produk.nama as nama,harga,ukuran,deskripsi,berat,category.nama as category');
         $table->join('category', 'category.id_category = produk.id_category');
+        $table->groupBy("produk.id_produk");
         $query = $table->get()->getResultArray();
         return $query;
     }
+
 
     public function insertData($nama,$harga,$ukuran,$deskripsi,$id_category,$berat){
         $table = $this->db->table('produk');
@@ -69,7 +80,6 @@ class ProdukModel extends Model
     public function view_gambar($id){
         $table = $this->db->table('gambar');
         $table->select('id_gambar,gambar.nama as nama');
-        $table->join('produk', 'produk.id_produk = gambar.id_produk');
         $table->where('gambar.id_produk',$id);
         $query = $table->get()->getResultArray();
         return $query;

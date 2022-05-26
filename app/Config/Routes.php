@@ -39,6 +39,7 @@ $routes->get('/a/category/','CategoryController::View');
 $routes->get('/a/produk/','ProdukController::View');
 $routes->get('/a/produk/gambar/','ProdukController::View_img');
 $routes->get('/a/account/','AdminController::account');
+$routes->get('/a/order/','AdminController::order');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

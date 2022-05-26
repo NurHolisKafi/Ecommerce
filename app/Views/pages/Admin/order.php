@@ -14,8 +14,9 @@
                     <tr>
                         <th>No</th>
                         <th>Produk</th>
-                        <th>Jumlah</th>
+                        <th width="60px">Jumlah</th>
                         <th>Harga</th>
+                        <th>Total</th>
                         <th>Account</th>
                         <th>Status</th>
                         <th>Aksi</th>
@@ -27,34 +28,29 @@
                         <th>Produk</th>
                         <th>Jumlah</th>
                         <th>Harga</th>
+                        <th>Total</th>
                         <th>Account</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </tfoot>
                 <tbody>
+                    <?php $no=1;  foreach($data as $key) :?>
                     <tr>
-                        <td>1</td>
-                        <td>Bedak Bayi</td>
-                        <td class="text-center">2</td>
-                        <td>Rp. 115.000</td>
-                        <td>mina@gmail.com</td>
-                        <td>Belum Bayar</td>
+                        <td><?= $no; ?></td>
+                        <td><?= $key['produk']; ?></td>
+                        <td class="text-center"><?= $key['jumlah']; ?></td>
+                        <td><?= $key['harga']; ?></td>
+                        <td><?= $key['total']; ?></td>
+                        <td><?= $key['email']; ?></td>
+                        <td><?= $key['status']; ?></td>
                         <td>
                             <a href="" class="btn btn-sm btn-danger shadow-none"><i class="fa-solid fa-xmark me-2"></i>Cancel</a>
                         </td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Bedak Bayi</td>
-                        <td class="text-center">2</td>
-                        <td>Rp. 115.000</td>
-                        <td>mina@gmail.com</td>
-                        <td>Belum Bayar</td>
-                        <td>
-                            <a href="" class="btn btn-sm btn-danger"><i class="fa-solid fa-xmark me-2"></i>Cancel</a>
-                        </td>
-                    </tr>
+                    <?php
+                     $no++;
+                     endforeach; ?>
                 </tbody>
             </table>
         </div>

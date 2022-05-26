@@ -34,7 +34,6 @@
             <p style="font-size: 20px; font-weight: 500">Detail Produk</p>
             <div style="line-height: 0.5;">
                 <p >Jumlah Produk: 30</p>
-                <p>Produk Terjual: 20</p>
             </div>
             <button ctype="button" class="btn btn-sm btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Tambah"><i class="fa-solid fa-plus me-2"></i>Tambah</button>
         </div>
