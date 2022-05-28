@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Oswald&display=swap');
+
+body {
+    color: #2d2d2d;
+    background-color: #ededed;
+    font-size: 16px;
+    min-height: 100vh;
+}
+
+.header {
+    font-size: xx-large;
+    font-weight: 500;
+}
+
+.featured-title {
+    position: relative;
+    line-height: 60px;
+    margin: 0 auto 50px;
+}
+
+.featured-title::after {
+    content: '';
+    background: #ff523b;
+    height: 3px;
+    width: 100px;
+    border-radius: 5px;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+}
+
+.section-title {
+    font-size: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.garis-biru {
+    height: 2px;
+    width: 130px;
+    background: #3d55df;
+}
+
+@media screen and (min-width: 576px) {
+    .input-group {
+        width: 40%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .input-group {
+        width: 50%;
+    }
+}
+
+
+@media screen and (max-width: 326px) {
+
+    #icon-search,
+    #icon-keranjang,
+    #icon-profile {
+        margin: 0;
+    }
+}
+
+
+.input-group .form-control {
+    border: 1px solid orange !important;
+    border-top-left-radius: 20px !important;
+    border-bottom-left-radius: 20px !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.input-group button {
+    background: orange;
+    margin: 0;
+    border: 1px solid orange !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-top-right-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+    box-shadow: none !important;
+}
+
+.input-group i {
+    color: white;
+}
+
+.navbar-button {
+    background-color: orange;
+    color: white;
+}
+
+.navbar-button:hover {
+    background-color: orangered;
+    color: white;
+}
+
+
+
+th {
+    font-size: large;
+}
+
+td {
+    font-size: 1rem;
+}
+
+.overlay-image {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.7;
+}
+
+.carousel-item {
+    position: relative;
+    height: 34rem;
+}
+
+.form-control {
+    font-size: 15px;
+}
+
+#card-produk {
+    margin-top: 10px;
+}
+
+#card-produk:hover {
+    border: 1px solid #2d2d2d;
+}
+
+
+.img-kategori {
+    width: 35px;
+}
+
+.img-kategori:hover {
+    transform: scale(1.1);
+    transition: 0.3s ease;
+}
+
+.nav-item {
+    margin-right: 10px;
+}
+
+#kategori {
+    margin: 0;
+}
+
+.navbar-brand {
+    font-family: 'Dancing Script', cursive;
+}
+
+@media screen and (min-width: 991px) {
+    .form-control {
+        width: 350px;
+    }
+}
+
+.single-produk {
+    margin: 0;
+    padding: 10px;
+    padding-top: 16px;
+}
+
+
+.garis-nama {
+    border-bottom: 2px solid #2d2d2d;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-custom {
+    padding: 10px;
+    font-size: 14px;
+}
+
+
+@media screen and (min-width: 991px) {
+    .deskripsi {
+        height: 190px;
+        overflow: scroll;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .deskripsi {
+        height: 240px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+}
+
+@media screen and (max-width: 328px) {
+    .btn-beli {
+        margin-top: 10px;
+    }
+}
+
+.deskripsi::-webkit-scrollbar {
+    display: none;
+}
+
+footer {
+    position: relative;
+    bottom: 0;
+}
+
+.btn-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.list-menu {
+    font-size: 18px;
+    padding: 10px;
+}
+
+.list-menu a p {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.list-menu:hover {
+    cursor: pointer;
+    background-color: rgb(69, 201, 245);
+}
+
+.table-responsive::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+@media screen and (min-width: 445px) {
+    #btn_editpass {
+        margin-left: auto;
+    }
+}

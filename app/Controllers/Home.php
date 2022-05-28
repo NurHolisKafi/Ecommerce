@@ -34,9 +34,7 @@ class Home extends BaseController
     }
 
     public function test(){
-        \App\Models\CategoryModel::view();
-        // $this->session->set('nama','kuus');
-        // echo $this->session->get('nama');
+        return view('Pages/User/Main_page/home');
     }
 
     
