@@ -2,35 +2,41 @@
 <?= $this->section('content') ?> 
 
 <!-- Singleproduk -->
-  <div class="container bg-white mt-5">
+  <div class="container bg-white mt-5 p-3">
         <div class="row justify-content-center single-produk">
             <div class="col-lg-5 ">
                 <figure class="figure">
-                    <img src="/assets/img2/Arbeuty/9.jpg" class="figure-img img-fluid" alt="..." width="410px">
-                    <figcaption class="figure-caption justify-content-evenly d-flex">
-                        <a href=""><img src="/assets/img2/Arbeuty/9.jpg" class="figure-img img-fluid" alt="..." width="70px"></a>
+                    <img src="/assets/img/<?=$img[0]['nama'];?>" class="figure-img img-fluid" alt="..." width="410px" style="min-height: 300px;">
+                    <figcaption class="figure-caption justify-content-center d-flex">
+                      <?php foreach($img as $key): ?>
+                        <img src="/assets/img/<?=$key['nama'];?>" class="figure-img img-fluid me-2" alt="..." width="70px">
+                      <?php endforeach; ?>
                     </figcaption>
                   </figure>
             </div>
             <div class="col-lg-7">
-                <h4>Kemeja Hitam</h4>
+                <h4><?=$detail['nama'];?></h4>
                 <div class="garis-nama"></div>
-                <p style="font-size: x-large;">Rp. 30.000</p>
+                <p style="font-size: x-large;" id="view-harga"><?=$detail['harga'];?></p>
                 <div id="jumlah" class="mt-3">
-                    <button type="button" class="btn btn-danger btn-sm shadow-none"><i class="fa-solid fa-minus"></i></button>
-                    <span class="mx-2" style="font-size: larger;">2</span>
-                    <button type="button" class="btn btn-warning btn-sm shadow-none"><i class="fa-solid fa-plus"></i></button>
-                    <span class="mx-2">tersisa 25 buah</span>
+                    <button onclick="kurang()" type="button" class="btn btn-light border btn-sm shadow-none" id="minus" ><i class="fa-solid fa-minus"></i></button>
+                    <span class="mx-2" style="font-size: larger;">1</span>
+                    <button onclick="tambah()" type="button" class="btn btn-light border btn-sm shadow-none" id="plus"><i class="fa-solid fa-plus"></i></button>
+                    <span class="mx-2">tersisa <?=$detail['stok'];?> buah</span>
                 </div>
+                <?= form_open('/UserController/Add_keranjang'); ?>
+                <?= form_hidden('id_produk',$detail['id_produk']); ?>
+                <input type="hidden" name="jumlah" id="total" value="1">
+                <input type="hidden" name="harga" id="harga" value="1">
                 <div class="btn-produk mt-5">
-                    <a href="" class="btn btn-dark text-white btn-lg me-2 btn-custom"><i class="fa-solid fa-cart-shopping me-2"></i>Masukkan Keranjang</a>
+                    <button class="btn btn-danger text-white btn-lg me-2 btn-custom"><i class="fa-solid fa-cart-shopping me-2" data-bs-toggle="modal" data-bs-target="#notif"></i>Masukkan Keranjang</button>
                     <a href="" class="btn btn-primary text-white btn-lg me-2 btn-custom" >Beli Sekarang</a>
                 </div>
                 <div class="mt-4">
-                  <div class="card deskripsi">
+                  <div class="card deskripsi border border-dark">
                     <div class="card-body">
-                      <h6>Deskripsi</h6>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore, harum repellat quas a distinctio nihil ut! Sit amet dicta tempore quidem molestiae. Facilis itaque atque molestiae nihil debitis, omnis rerum numquam aliquam mollitia. Repudiandae temporibus voluptatibus ea. Natus, blanditiis quos voluptatibus reiciendis animi culpa, quae rerum aspernatur molestias amet minima rem esse repudiandae ex exercitationem provident. Officia optio, quidem adipisci facilis perspiciatis soluta! Itaque, ab? Laudantium cupiditate totam voluptates voluptate, laboriosam esse corrupti tenetur libero ut? Eaque illum repellat veniam consequatur minus rerum et repellendus sit, qui tenetur voluptatibus nemo esse eius. Praesentium omnis doloribus tenetur molestias placeat, iusto tempore.
+                      <h5 class="card-title fw-bold border-bottom">Rincian Produk</h5>
+                      <?=$detail['deskripsi'];?>
                     </div>
                   </div>
                 </div>
@@ -66,5 +72,65 @@
     </div>
   </section>
 
+  <div class="modal fade" id="notif" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Produk ditambahkan ke keranjang
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    var angka = document.querySelector('#jumlah span');
+    var plus = document.querySelector('#plus');
+    var total = document.querySelector('#total');
+    var total_harga = document.querySelector('#view-harga');
+    var input_harga = document.querySelector('#harga');
+    var b = total_harga.innerHTML;
+    var a = angka.textContent;   
+
+
+    //untuk format view harga
+    function view(harga){
+      let a = String(harga).split("").reverse();
+      for (let b = 0; b < a.length; b++) {
+          if ((b + 1) % 3 == 0 && b != a.length - 1) {
+              a[b] = `.${a[b]}`;
+          }
+      }
+      hasil = a.reverse().join("");
+      return `Rp ${hasil}`
+    }
+
+
+    function change(c){
+      hasil = c * a;
+      angka.textContent=a;
+      total.value = a;
+      input_harga.value = hasil
+      total_harga.innerHTML = view(hasil);
+    }
+
+    function tambah(){
+      a++;
+      change(b);
+    }
+
+    function kurang(){
+      if(a > 1){
+        a--;
+        change(b);  
+      }
+    }
+  </script>
 
 <?= $this->endSection() ?>

@@ -14,11 +14,13 @@ class ProdukController extends BaseController
     }
 
     public function View(){
+        
         $result = [
             'session' => $this->session,
             'validate' => $this->validation,
             'data_produk' => $this->model->view_produk(),
             'data_category' => $this->model->view_category(),
+            'jumlah' => $this->model->Jumlah()
         ];
         return view('pages/Admin/produk',$result);
     }
@@ -37,7 +39,7 @@ class ProdukController extends BaseController
 
         $nama = $this->request->getpost('nama');
         $harga = $this->request->getpost('harga');
-        $ukuran = $this->request->getpost('ukuran');
+        $ukuran = $this->request->getpost('stok');
         $berat = $this->request->getpost('berat');
         $deskripsi = $this->request->getpost('deskripsi');
         $id_category = $this->request->getpost('category');
@@ -50,7 +52,7 @@ class ProdukController extends BaseController
         $id = $this->request->getpost('id_produk');
         $nama = $this->request->getpost('nama');
         $harga = $this->request->getpost('harga');
-        $ukuran = $this->request->getpost('ukuran');
+        $ukuran = $this->request->getpost('stok');
         $berat = $this->request->getpost('berat');
         $deskripsi = $this->request->getpost('deskripsi');
         $id_category = $this->request->getpost('category');
@@ -66,7 +68,7 @@ class ProdukController extends BaseController
     public function Data($id){
         $result = $this->model->dataById($id)[0];
         $data = [
-            'input' => [$result['id_produk'],$result['nama'],$result['harga'],$result['ukuran'],$result['berat']],
+            'input' => [$result['id_produk'],$result['nama'],$result['harga'],$result['stok'],$result['berat']],
             'category' => $result['id_category'],
             'deskripsi' => $result['deskripsi'],
         ];

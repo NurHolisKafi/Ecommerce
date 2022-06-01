@@ -1,10 +1,10 @@
-  <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top px-2 shadow shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top px-2 shadow shadow-sm" style="z-index: 2;">
     <div class="container p-sm-1">
       <a class="navbar-brand mx-lg-5" href="#">ArBeauty Store</a>
 
       <!-- searching -->
       <form class="input-group d-md-flex d-none me-md-auto search-navbar" method="POST" action="#">
-        <input class="form-control" type="search" placeholder="Search" aria-label="Search" aria-describedby="search">
+        <input class="form-control input-search" type="search" placeholder="Search" aria-label="Search" aria-describedby="search">
         <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
 
@@ -61,6 +61,23 @@
           <li><a href="" class="dropdown-item">Logout</a></li>
         </ul>
       </div>
-
     </div>
   </nav>
+
+  <form class="input-group search-navbar position-absolute search-hidden hidden d-md-none" method="POST" action="#">
+    <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="" aria-describedby="search">
+    <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+  </form>
+
+
+  <script>
+  var icon = document.getElementById('icon-search');
+  var form = document.querySelector('.search-hidden');
+  var a = document.querySelector('.search-hidden .form-control');
+  a.focus();
+  icon.addEventListener('click',function() {
+    form.classList.toggle("hidden");
+    form.classList.toggle("show");
+    // form.style.transition: opacity 0.5s;
+  })
+  </script>

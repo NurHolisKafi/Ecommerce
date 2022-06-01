@@ -64,7 +64,6 @@ body {
     }
 }
 
-
 .input-group .form-control {
     border: 1px solid orange !important;
     border-top-left-radius: 20px !important;
@@ -100,6 +99,28 @@ body {
 }
 
 
+.search-hidden {
+    position: absolute;
+    width: 80%;
+    z-index: 3;
+    margin-left: 50px;
+}
+
+.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.show {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+@media screen and (max-width: 767px) {
+    .search-hidden {
+        top: 30px;
+    }
+}
 
 th {
     font-size: large;
@@ -160,7 +181,7 @@ td {
 }
 
 @media screen and (min-width: 991px) {
-    .form-control {
+    .input-search {
         width: 350px;
     }
 }
@@ -193,7 +214,7 @@ td {
 
 @media screen and (min-width: 1200px) {
     .deskripsi {
-        height: 240px;
+        height: 150px;
         overflow: scroll;
         overflow-x: hidden;
     }

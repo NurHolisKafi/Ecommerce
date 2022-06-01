@@ -33,7 +33,7 @@
         <div class="card-body p-4">
             <p style="font-size: 20px; font-weight: 500">Detail Produk</p>
             <div style="line-height: 0.5;">
-                <p >Jumlah Produk: 30</p>
+                <p >Jumlah Produk: <?= $jumlah; ?></p>
             </div>
             <button ctype="button" class="btn btn-sm btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Tambah"><i class="fa-solid fa-plus me-2"></i>Tambah</button>
         </div>
@@ -52,7 +52,8 @@
                         <th>Nama</th>
                         <th>Category</th>
                         <th>Harga</th>
-                        <th width="200px">Keterangan</th>
+                        <th>Stok</th>
+                        <th width="200px">Deskripsi</th>
                         <th>Gambar</th>
                         <th>Aksi</th>
                     </tr>
@@ -63,7 +64,8 @@
                         <th>Nama</th>
                         <th>Category</th>
                         <th>Harga</th>
-                        <th>Keterangan</th>
+                        <th>Stok</th>
+                        <th>Deskripsi</th>
                         <th>Gambar</th>
                         <th>Aksi</th>
                     </tr>
@@ -74,17 +76,14 @@
                         <td><?= $no; ?></td>
                         <td><?= $key['nama']; ?></td>
                         <td><?= $key['category']; ?></td>
-                        <td>Rp. <?= $key['harga']; ?></td>
-                        <td>
-                            <p>Ukuran : <?= $key['ukuran']; ?><br>
-                            Berat : <?= $key['berat']; ?><br>
-                            Deskripsi :<br><?= $key['deskripsi']; ?></p>
-                        </td>
+                        <td id ="harga"><?= $key['harga']; ?></td>
+                        <td><?= $key['stok']; ?></td>
+                        <td><?= $key['deskripsi']; ?></td>
                         <td>
                             <a href="/a/produk/gambar?id=<?= $key['id_produk']; ?>&&nama=<?= $key['nama']; ?>" class="btn btn-sm btn-success shadow-none"><i class="fa-solid fa-eye fa-sm me-1"></i>View</a>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-secondary me-1" data-bs-toggle="modal" data-bs-target="#Tambah" data-bs-id="<?= $key['id_produk']; ?>"><i class="fa-solid fa-pen-to-square me-1"></i>Edit</button>
+                            <button type="button" class="btn btn-sm btn-secondary shadow-none me-1" data-bs-toggle="modal" data-bs-target="#Tambah" data-bs-id="<?= $key['id_produk']; ?>"><i class="fa-solid fa-pen-to-square me-1"></i>Edit</button>
                             <button type="button" class="btn btn-sm btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#delete" data-bs-id="<?= $key['id_produk']; ?>"><i class="fa-solid fa-trash-can me-2"></i>Hapus</button>
                         </td>
                     </tr>
@@ -116,11 +115,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="form-label">Harga</label>
-                        <input type="text" class="form-control mt-1 shadow-none" name="harga" required>
+                        <input type="text" class="form-control mt-1 shadow-none" name="harga" placeholder="tanpa titik, ex: 1000" required>
                     </div>
                     <div class="mb-3">
-                        <label for="form-label">Ukuran</label>
-                        <input type="text" class="form-control mt-1 shadow-none" name="ukuran" required>
+                        <label for="form-label">Stok</label>
+                        <input type="text" class="form-control mt-1 shadow-none" name="stok" required>
                     </div>
                     <div class="mb-3">
                         <label for="form-label">Berat</label>
@@ -224,11 +223,14 @@
     hapus.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget
         var id = button.getAttribute('data-bs-id');
-        console.log(id)
         link = document.querySelector('.modal-footer #btn_hapus');
         link.href = '/ProdukController/Delete/' + id;
 
     })
+
+    
+    
+
 </script>
 
 <?= $this->endSection() ?>

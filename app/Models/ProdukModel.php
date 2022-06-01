@@ -12,31 +12,26 @@ class ProdukModel extends Model
         return $table->get()->getResultArray();
     }
 
-    public function view_produkByUser(){
-        $table = $this->db->table('produk');
-        $table->select('produk.id_produk,produk.nama as nama,harga,gambar.nama as gambar');
-        $table->join('gambar', 'gambar.id_produk = produk.id_produk');
-        $table->groupBy("produk.id_produk");
-        $query = $table->get()->getResultArray();
-        return $query;
-    }
-
     public function view_produk(){
         $table = $this->db->table('produk');
-        $table->select('id_produk,produk.nama as nama,harga,ukuran,deskripsi,berat,category.nama as category');
+        $table->select('id_produk,produk.nama as nama,harga,stok,deskripsi,berat,category.nama as category');
         $table->join('category', 'category.id_category = produk.id_category');
         $table->groupBy("produk.id_produk");
         $query = $table->get()->getResultArray();
         return $query;
     }
 
+    public function Jumlah(){
+        $table = $this->db->table('produk');
+        return $table->countAll();
+    }
 
-    public function insertData($nama,$harga,$ukuran,$deskripsi,$id_category,$berat){
+    public function insertData($nama,$harga,$stok,$deskripsi,$id_category,$berat){
         $table = $this->db->table('produk');
         $data = [
             'nama' => $nama,
             'harga' => $harga,
-            'ukuran' => $ukuran,
+            'stok' => $stok,
             'deskripsi' => $deskripsi,
             'id_category' => $id_category,
             'berat' => $berat,
@@ -45,12 +40,12 @@ class ProdukModel extends Model
         return $query;
     }
 
-    public function updateData($id,$nama,$harga,$ukuran,$deskripsi,$id_category,$berat){
+    public function updateData($id,$nama,$harga,$stok,$deskripsi,$id_category,$berat){
         $table = $this->db->table('produk');
         $data = [
             'nama' => $nama,
             'harga' => $harga,
-            'ukuran' => $ukuran,
+            'stok' => $stok,
             'deskripsi' => $deskripsi,
             'id_category' => $id_category,
             'berat' => $berat,

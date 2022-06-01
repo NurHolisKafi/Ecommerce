@@ -37,6 +37,7 @@
   <script src="/assets/js/scripts.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
   <script src="/assets/js/datatables-simple-demo.js"></script>
+  <script src="/assets/js/harga.js"></script>
   <script>
     $(function () {
       //Initialize Select2 Elements
