@@ -59,17 +59,17 @@ class UserController extends BaseController
     
     public function Checkout(){
         $id = $this->request->getPost('id');
-        $jumlah = $this->request->getPost('jumlah');
         $data_pesanan = array();
-        $total_harga=0;
+        $total_harga = 0;
          for ($b=0; $b<count($id); $b++){
             $produk =  $this->model->view_produkById($id[$b]);
-            $total_harga += $produk['harga'] * $jumlah[$b];
+            $jumlah = $this->request->getPost("jumlah".$produk['id_produk']);
+            $total_harga += $produk['harga'] * $jumlah;
             $data = [
                 'id' => $produk['id_produk'],
                 'nama' => $produk['nama'],
-                'jumlah' => $jumlah[$b],
-                'total' => $produk['harga'] * $jumlah[$b]
+                'jumlah' => $jumlah,
+                'total' => $produk['harga'] * $jumlah
             ];
             array_push($data_pesanan,$data);
         };

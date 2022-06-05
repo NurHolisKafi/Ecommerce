@@ -15,7 +15,7 @@
       <div class="garis-nama"></div>
     </div>
 
-    <form action="/UserController/checkout/" method="POST">
+    <form action="/checkout/" method="POST">
     <div class="row justify-content-center row-keranjang">  
       <?php foreach($data as $key): ?>
       <div class="col-8 col-lg-3 col-md-4 p-4">
@@ -37,7 +37,7 @@
                   <button type="button" class="btn btn-light border shadow-none btn-sm"><i class="fa-solid fa-minus"></i></button>
                   <span class="mx-2" style="font-size: larger;"><?=$key['jumlah'];?></span>
                   <button type="button" class="btn btn-light border shadow-none btn-sm"><i class="fa-solid fa-plus"></i></button>
-                  <input type="hidden" name="jumlah[]" value="0">
+                  <input type="hidden" name="jumlah<?=$key['id_produk'];?>" value="0">
                 </div>
               </div>
             </div>
@@ -108,8 +108,7 @@
     let jumlahperItem = hargapesan.innerHTML
     let jumharga = hargapesan.innerHTML * span.innerHTML
     hargapesan.innerHTML = jumharga
-    console.log(jumlahperItem);
-
+    console.log(input.name);
     minus.addEventListener('click',function(){
       a = span.innerHTML
       if( a > 1){

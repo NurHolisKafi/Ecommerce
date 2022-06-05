@@ -21,7 +21,7 @@
         <div class="row justify-content-between">
             <div class="col-md-5">
                 <h6 class="fw-bold mb-2">Billing Address</h6>
-                <form>
+                <form action="/detail/" method="POST">
                     <div class="mb-3">
                       <label for="nama" class="form-label">Nama</label>
                       <input type="text" class="form-control shadow-none" id="nama" aria-describedby="nama" required>
@@ -50,6 +50,10 @@
                         </select>
                       </div>
                       <div class="mb-3">
+                        <label for="alamat-lengkap" class="form-label">Alamat Lengkap</label>
+                        <textarea class="form-control" id="alamat-lengkap" name="alamat-lengkap" rows="3"></textarea>
+                      </div>
+                      <div class="mb-3">
                         <label class="form-label">Ekspedisi</label>
                         <select class="form-select" aria-label="Default select example" name="kurir" required>
                         </select>
@@ -58,7 +62,7 @@
                     <div class="row" id="pilihan_kurir">
                     </div>
                       <a href="keranjang.html" class="btn btn-lg btn-danger ms-sm-0 ms-2" style="font-size: 14px;">Kembali</a>
-                      <button class="btn btn-beli btn-lg btn-primary ms-lg-5 ms-md-3 ms-2" style="font-size: 14px;">Beli Sekarang</button>
+                      <button type="submit" class="btn btn-beli btn-lg btn-primary ms-lg-5 ms-md-3 ms-2" style="font-size: 14px;">Beli Sekarang</button>
                   </form>
             </div>
             <div class="col-md-5 mt-5">
