@@ -17,6 +17,6 @@ class RO extends BaseController
 
         $provinsi = json_decode($client->get('province')->getBody());
         
-        dd($provinsi->rajaongkir->results[0]);
+        dd($provinsi);
     }
 }

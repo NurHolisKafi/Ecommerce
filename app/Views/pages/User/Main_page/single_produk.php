@@ -27,7 +27,6 @@
                 <?= form_open('/UserController/Add_keranjang'); ?>
                 <?= form_hidden('id_produk',$detail['id_produk']); ?>
                 <input type="hidden" name="jumlah" id="total" value="1">
-                <input type="hidden" name="harga" id="harga" value="1">
                 <div class="btn-produk mt-5">
                     <button class="btn btn-danger text-white btn-lg me-2 btn-custom"><i class="fa-solid fa-cart-shopping me-2" data-bs-toggle="modal" data-bs-target="#notif"></i>Masukkan Keranjang</button>
                     <a href="" class="btn btn-primary text-white btn-lg me-2 btn-custom" >Beli Sekarang</a>
@@ -93,9 +92,6 @@
     var angka = document.querySelector('#jumlah span');
     var plus = document.querySelector('#plus');
     var total = document.querySelector('#total');
-    var total_harga = document.querySelector('#view-harga');
-    var input_harga = document.querySelector('#harga');
-    var b = total_harga.innerHTML;
     var a = angka.textContent;   
 
 
@@ -112,23 +108,20 @@
     }
 
 
-    function change(c){
-      hasil = c * a;
+    function change(){
       angka.textContent=a;
       total.value = a;
-      input_harga.value = hasil
-      total_harga.innerHTML = view(hasil);
     }
 
     function tambah(){
       a++;
-      change(b);
+      change();
     }
 
     function kurang(){
       if(a > 1){
         a--;
-        change(b);  
+        change();  
       }
     }
   </script>

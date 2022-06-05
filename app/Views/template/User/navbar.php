@@ -15,7 +15,7 @@
 
       <!-- tombol keranjang -->
       <div class="d-sm-flex d-none mx-sm-3 mx-md-2 me-lg-4 ms-lg-3">
-        <a href="" class="btn btn-outline-dark shadow-none">
+        <a href="/keranjang"" class="btn btn-outline-dark shadow-none">
           <i class="fa-solid fa-cart-shopping"></i>
           Cart
           <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
@@ -24,7 +24,7 @@
 
       <!-- icon keranjang -->
       <div class="d-sm-none ms-4 me-3" id="icon-keranjang">
-        <a href="" class="text-dark"><i class="fa-solid fa-bag-shopping"></i></a>
+        <a href="/keranjang" class="text-dark"><i class="fa-solid fa-bag-shopping"></i></a>
       </div>
 
       <!-- akun belum login -->

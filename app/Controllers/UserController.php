@@ -2,27 +2,41 @@
 
 namespace App\Controllers;
 use App\Models\UserModel;
+use CodeIgniter\API\ResponseTrait;
 
 class UserController extends BaseController
 {
+    use ResponseTrait;
     protected $model;
     public function __construct() {
         $this->model = new UserModel();
         helper('form');
     }
 
-public function tes(){
-    $id = $this->request->getPost('total');
-    $a = array();
-    for ($i=0; $i<3; $i++){
-        $data = [
-            'id' => $i,
-            'nama' => 'ah'
-        ];
-        array_push($a,$data);
-    };
-    dd($this->model->view_keranjang());
-}
+    public function tes(){
+        
+        $id = $this->request->getPost('id');
+        $jumlah = $this->request->getPost('jumlah');
+        
+        $a = array();
+        // for ($i=0; $i<3; $i++){
+        //     $data = [
+        //         'id' => $i,
+        //         'nama' => 'ah'
+        //     ];
+        //     array_push($a,$data);
+        // };
+
+        // for ($b=0; $b<count($id); $b++){
+        //     $data = [
+        //         'id' => $id[$b],
+        //         'jumlah' => $jumlah[$b],
+        //         'total' => $this->model->harga_produk($id[$b])['harga'] * $jumlah[$b]
+        //     ];
+        //     array_push($a,$data);
+        // };
+        dd($this->model->view_produkById(1));
+    }
 
 
 
@@ -44,7 +58,27 @@ public function tes(){
     }
     
     public function Checkout(){
-        return view('Pages/User/Main_page/order');
+        $id = $this->request->getPost('id');
+        $jumlah = $this->request->getPost('jumlah');
+        $data_pesanan = array();
+        $total_harga=0;
+         for ($b=0; $b<count($id); $b++){
+            $produk =  $this->model->view_produkById($id[$b]);
+            $total_harga += $produk['harga'] * $jumlah[$b];
+            $data = [
+                'id' => $produk['id_produk'],
+                'nama' => $produk['nama'],
+                'jumlah' => $jumlah[$b],
+                'total' => $produk['harga'] * $jumlah[$b]
+            ];
+            array_push($data_pesanan,$data);
+        };
+        $result = [
+            'data_pesanan' => $data_pesanan,
+            'provinsi' => $this->model->getAddress("province"),
+            'total_harga' => $total_harga,
+        ];
+        return view('Pages/User/Main_page/order',$result);
     }
     
     public function Single_produk(){
@@ -85,6 +119,7 @@ public function tes(){
         return view('Pages/User/Profile_page/change_pass');
     }
 
+    //Insert
     public function Add_keranjang(){
         if(!$this->validate([
             'id_produk' => [
@@ -98,8 +133,51 @@ public function tes(){
         };
         $id_produk = $this->request->getPost('id_produk');
         $total = $this->request->getPost('jumlah');
-        $harga = $this->request->getPost('harga');
-        $hasil = $this->model->add_keranjang($id_produk,$total,$harga);
+        $hasil = $this->model->add_keranjang($id_produk,$total);
         echo "sukses";
+    }
+
+    //Data
+    public function DataCity(){
+        $id = $this->request->getPost('id');
+        $data = $this->model->getAddress("city?province=" . $id);
+        
+        echo "<option selected='selected' disabled>-- Pilih --</option>";
+        foreach ($data as $key) {
+            echo "<option value=".$key['city_id'].">";
+            echo $key['type']." ".$key['city_name'];
+            echo "</option>";
+        }
+    }
+
+    public function DataKurir(){
+        echo"<option selected='selected' disabled>-- Pilih --</option>
+        <option value='jne'>JNE</option>
+        <option value='pos'>POS Indonesia</option>
+        <option value='tiki'>TIKI</option>";
+    }
+
+    public function DataCost(){
+        $tujuan = $this->request->getPost('tujuan');
+        $berat = $this->request->getPost('berat');
+        $kurir = $this->request->getPost('kurir');
+        $data = $this->model->getCost($tujuan,$berat,$kurir);
+        foreach ($data['costs'] as $key) {
+            echo "<div class='col-sm-6 mb-3'>
+                    <div class='card'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>".$key['description']. "</h5>
+                        <p class='card-text value'>".$key['cost'][0]['value']."</p>
+                        <p class='card-text'>Estimasi : ";
+            if ($data['code'] == 'pos'){
+                echo $key['cost'][0]['etd']."</p>";
+            }else{
+                echo $key['cost'][0]['etd']." Hari </p>";
+            }
+            
+            echo "</div>
+                    </div>
+                  </div>";
+        }
     }
 }

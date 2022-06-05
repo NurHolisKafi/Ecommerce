@@ -76,7 +76,7 @@
                         <td><?= $no; ?></td>
                         <td><?= $key['nama']; ?></td>
                         <td><?= $key['category']; ?></td>
-                        <td id ="harga"><?= $key['harga']; ?></td>
+                        <td id ="view-harga"><?= $key['harga']; ?></td>
                         <td><?= $key['stok']; ?></td>
                         <td><?= $key['deskripsi']; ?></td>
                         <td>

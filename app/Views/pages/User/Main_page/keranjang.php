@@ -14,12 +14,13 @@
       </div>
       <div class="garis-nama"></div>
     </div>
-    <div class="row justify-content-center row-keranjang">
+
+    <form action="/UserController/checkout/" method="POST">
+    <div class="row justify-content-center row-keranjang">  
       <?php foreach($data as $key): ?>
       <div class="col-8 col-lg-3 col-md-4 p-4">
         <div class="container p-3 border border-danger position-relative" style="border-radius: 10px;">
           <a href="" class="btn-close btn-close-white" aria-label="Close"></a>
-          <form action="/UserController/tes" method="POST">
             <div class="form-check my-2">
               <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="id[]" value="<?=$key['id_produk'];?>">
               <label class="form-check-label" for="flexCheckDefault">
@@ -36,7 +37,7 @@
                   <button type="button" class="btn btn-light border shadow-none btn-sm"><i class="fa-solid fa-minus"></i></button>
                   <span class="mx-2" style="font-size: larger;"><?=$key['jumlah'];?></span>
                   <button type="button" class="btn btn-light border shadow-none btn-sm"><i class="fa-solid fa-plus"></i></button>
-                  <input type="hidden" name="jumlah[]" value="<?=$key['jumlah'];?>">    
+                  <input type="hidden" name="jumlah[]" value="0">
                 </div>
               </div>
             </div>
@@ -48,12 +49,8 @@
 
   <div class="container bg-white p-3 my-2">
     <div class="row">
-      <div class="col-sm">
-        <h4 id="total-pesanan">Total Harga : Rp. 1000.000,00</h4>
-        <input type="hidden" name="total" id="total" value="0">
-      </div>
-      <div class="col-sm-3 col-md-2">
-        <button class="btn btn-secondary ms-0 ms-lg-5 ms-md-2" style="font-size: 17px;">Checkout</button>
+      <div class="col">
+        <button class="btn btn-secondary" style="font-size: 17px;">Checkout</button>
       </div>
     </div>
     </form>
@@ -61,24 +58,22 @@
 
   <script>
   var btn = document.querySelector('#checkbox-all');
-  var input = document.querySelectorAll('#flexCheckDefault');
+  let input_checkbox = document.querySelectorAll('#flexCheckDefault');
   var angka = document.querySelector('#jumlah span');
   var plus = document.querySelector('#plus');
   let total_pesanan = document.querySelector('#total-pesanan');
   let input_totalHarga = document.querySelector('#total');
   let jumlahPesan = document.querySelectorAll('#jumlah');
-  let harga_peritem = [];
   let TotalHarga;
 
   //untuk checkbox
   btn.onclick = function() {
-    for (var checkbox of input) {
+    for (var checkbox of input_checkbox) {
       if(btn.checked == true){
         checkbox.checked = true
       }else{
         checkbox.checked = false
       }
-      
     }
   }
   //untuk format view harga
@@ -94,24 +89,12 @@
     return `Rp ${hasil}`
   }
   
-  //untuk menghitung jumlah harga 
-  function Total(){
-    TotalHarga = 0;
-    harga_peritem.forEach((e)=>{
-      TotalHarga += e;
-    })
-  }
-
   //melakukan update data
-  function change(jumharga,a,span,hargapesan,input,i){
+  function change(jumharga,a,span,hargapesan,input){
     total_peritem = jumharga * a
     span.innerHTML = a;
     hargapesan.innerHTML = view(total_peritem);
     input.value = a
-    harga_peritem[i] = total_peritem
-    Total();
-    total_pesanan.innerHTML = "Total Harga : " + view(TotalHarga);
-    input_totalHarga.value = TotalHarga;
   }
 
   //memberikan event pada tombol + -
@@ -121,21 +104,25 @@
     let span = e.children[1];
     let plus = e.children[2];
     let input = e.children[3];
-    let jumharga = parseInt(hargapesan.innerHTML);
-    harga_peritem.push(jumharga);
-    let a = parseInt(span.innerHTML);
-    let perItem = jumharga / a
-     
+    input.value = span.innerHTML
+    let jumlahperItem = hargapesan.innerHTML
+    let jumharga = hargapesan.innerHTML * span.innerHTML
+    hargapesan.innerHTML = jumharga
+    console.log(jumlahperItem);
+
     minus.addEventListener('click',function(){
+      a = span.innerHTML
       if( a > 1){
         a--;
-        change(perItem,a,span,hargapesan,input,i);
+        change(jumlahperItem,a,span,hargapesan,input);
       }
-     })
+    })
 
-     plus.addEventListener('click',function(){
+    plus.addEventListener('click',function(){
+      a = span.innerHTML
       a++;
-      change(perItem,a,span,hargapesan,input,i);
+      console.log(jumlahperItem * a);
+      change(jumlahperItem,a,span,hargapesan,input);
     })
   })
 
