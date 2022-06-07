@@ -149,7 +149,7 @@ class UserController extends BaseController
         
         echo "<option selected='selected' disabled>-- Pilih --</option>";
         foreach ($data as $key) {
-            echo "<option value=".$key['city_id']." postal_code=".$key['postal_code'].">";
+            echo "<option value=".$key['city_id']." postal_code=".$key['postal_code']." nama=".$key['city_name'].">";
             echo $key['type']." ".$key['city_name'];
             echo "</option>";
         }

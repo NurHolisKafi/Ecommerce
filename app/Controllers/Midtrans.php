@@ -5,9 +5,9 @@ use CodeIgniter\API\ResponseTrait;
 class Midtrans extends BaseController
 {
     use ResponseTrait;
-    public function index()
-    {
-
+    protected $model;
+    public function __construct(Type $var = null) {
+        $this->model = new \App\Models\UserModel;
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = 'SB-Mid-server-PbLjRJXsMGxuGw0hh0B9u2Ur';
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
@@ -16,71 +16,62 @@ class Midtrans extends BaseController
         \Midtrans\Config::$isSanitized = true;
         // Set 3DS transaction for credit card to true
         \Midtrans\Config::$is3ds = true;
-
-        // Populate items
-    $items = array(
-        array(
-            'id'       => 'item1',
-            'price'    => 100000,
+    }
+    public function index()
+    {
+        $id = $this->request->getPost('id');
+        $jumlah = $this->request->getPost('jumlah');
+        $item = array();
+        for ($i=0; $i < count($id) ; $i++) {
+            $produk =  $this->model->view_produkById($id[$i]); 
+            $data = [
+                'id' => 'item'.($i+1),
+                'price' => $produk['harga'],
+                'quantity' => $jumlah[$i],
+                'name' => $produk['nama']
+            ];
+            array_push($item,$data);
+        }
+        array_push($item,[
+            'id' => 'ongkir',
+            'price' => $this->request->getPost('subtotal_pengiriman'),
             'quantity' => 1,
-            'name'     => 'Adidas f50'
-        ),
-        array(
-            'id'       => 'item2',
-            'price'    => 50000,
-            'quantity' => 1,
-            'name'     => 'nike90'
-        ),
-        array(
-            'id'       => 'ongkir',
-            'price'    => 20000,
-            'quantity' => 1,
-            'name'     => 'Pengiriman'
-        )
-    );
+            'name' => 'ongkos pengiriman'
+        ]);
+        $shipping_address = array(
+            'address'      => $this->request->getPost('alamat_lengkap'),
+            'city'         => $this->request->getPost('city'),
+            'postal_code'  => $this->request->getPost('postal_code'),
+            'country_code' => 'IDN'
+        );
 
-    // Populate customer's shipping address
-    $shipping_address = array(
-        'first_name'   => "John",
-        'last_name'    => "Watson",
-        'address'      => "Bakerstreet 221B.",
-        'city'         => "Jakarta",
-        'postal_code'  => "51162",
-        'phone'        => "081322311801",
-        'country_code' => 'IDN'
-    );
-
-    // Populate customer's info
-    $customer_details = array(
-        'first_name'       => "Andri",
-        'last_name'        => "Setiawan",
-        'email'            => "test@test.com",
-        'phone'            => "081322311801",
-        'shipping_address' => $billing_address
-    );
-
-    
-
+        $customer_details = array(
+            'first_name'       => $this->request->getPost('nama'),
+            'email'            => $this->request->getPost('email'),
+            'phone'            => $this->request->getPost('nohp'),
+            'shipping_address' => $shipping_address
+        );
+        
         $params = array(
             'transaction_details' => array(
                 'order_id' => rand(),
             ),
-            'item_details'        => $items,
+            'item_details'        => $item,
             'customer_details'    => $customer_details,
         );
-         
         
         $data =[
             'snapToken' => \Midtrans\Snap::getSnapToken($params)
         ];
 
-        return view('test',$data);
+        return $this->respond($data);
     }
 
     public function hasil()
     {
-        
-        $status = \Midtrans\Transaction::status('1891786488');
+        $hasil = json_decode($this->request->getPost('data'),true);
+        dd($hasil);
+        // $status = \Midtrans\Transaction::status('1891786488');
 
         // $hasil = (array) json_decode($this->request->getpost('jason'));
         
@@ -89,7 +80,7 @@ class Midtrans extends BaseController
         // ];
 
         
-        dd($status);
+        // dd($status);
         // foreach ($hasil as $key) {
         //     echo "{$key->pdf_url}";
         // }

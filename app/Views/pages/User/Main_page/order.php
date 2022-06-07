@@ -25,18 +25,18 @@ th{
         <div class="row justify-content-between">
             <div class="col-md-5">
                 <h6 class="fw-bold mb-2">Billing Address</h6>
-                <form action="/detail/" method="POST">
+                <form action="/Midtrans/index" method="POST" id="form">
                     <div class="mb-3">
                       <label for="nama" class="form-label">Nama</label>
-                      <input type="text" class="form-control shadow-none" id="nama" aria-describedby="nama" required>
+                      <input type="text" class="form-control shadow-none" name="nama" id="nama" aria-describedby="nama" required>
                     </div>
                     <div class="mb-3">
-                      <label for="nama" class="form-label">Email</label>
-                      <input type="email" class="form-control shadow-none" id="nama" aria-describedby="nama" required>
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control shadow-none" name="email" id="email" aria-describedby="nama" required>
                     </div>
                     <div class="mb-3">
-                        <label for="nama" class="form-label">No.Hp</label>
-                        <input type="text" class="form-control shadow-none" id="nama" aria-describedby="nama" required>
+                        <label for="nohp" class="form-label">No.Hp</label>
+                        <input type="text" class="form-control shadow-none" name="nohp" id="nohp" aria-describedby="nama" required>
                     </div>
                     <div class="mb-3" id="content_provinsi">
                       <label class="form-label">Provinsi</label>
@@ -55,7 +55,7 @@ th{
                       </div>
                       <div class="mb-3">
                         <label for="alamat-lengkap" class="form-label">Alamat Lengkap</label>
-                        <textarea class="form-control" id="alamat-lengkap" name="alamat-lengkap" rows="3"></textarea>
+                        <textarea class="form-control" id="alamat-lengkap" name="alamat_lengkap" rows="3" required></textarea>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Ekspedisi</label>
@@ -66,6 +66,7 @@ th{
                     <div class="row" id="pilihan_kurir">
                     </div>
                     <input type="hidden" name="postal_code">
+                    <input type="hidden" name="city">
                     <input type="hidden" name="subtotal_keseluruhan">
                     <input type="hidden" name="subtotal_produk">
                     <input type="hidden" name="subtotal_pengiriman">
@@ -84,6 +85,8 @@ th{
                       </thead>
                       <tbody>
                         <?php $no=1;  foreach($data_pesanan as $key) :?>
+                          <input type="hidden" name="id[]" value="<?= $key['id']; ?>">
+                          <input type="hidden" name="jumlah[]" value="<?= $key['jumlah']; ?>">
                         <tr>
                           <td><?= $no; ?></td>
                           <td><?= $key['nama']; ?></td>
@@ -113,8 +116,8 @@ th{
                       </tr>
                     </table>
                   </div>
-                    <a href="keranjang.html" class="btn btn-lg btn-danger ms-sm-0 ms-2" style="font-size: 14px;">Kembali</a>
-                    <button type="submit" class="btn btn-beli btn-lg btn-primary ms-lg-5 ms-md-3 ms-2" style="font-size: 14px;">Beli Sekarang</button>
+                    <a href="keranjang.html" class="btn btn-lg btn-danger ms-sm-0 ms-2 shadow-none" style="font-size: 14px;">Kembali</a>
+                    <button type="submit" id="pay-button" class="btn btn-beli btn-lg btn-primary ms-lg-5 ms-md-3 ms-2 shadow-none" style="font-size: 14px;">Beli Sekarang</button>
                     </form>
                 </div>
             </div>
@@ -122,6 +125,13 @@ th{
     </div>
 </div>
 
+<form action="/Midtrans/hasil" method="POST" id="form_respond">
+  <?php $no=1;  foreach($data_pesanan as $key) :?>
+    <input type="hidden" name="id[]" value="<?= $key['id']; ?>">
+    <input type="hidden" name="jumlah[]" value="<?= $key['jumlah']; ?>">
+  <?php endforeach; ?>
+  <input type="hidden" name="data">
+</form>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -140,7 +150,7 @@ th{
       </div>
     </div>
   </div>
-</div>
+</div> 
 
 <script>
 let kota;
@@ -148,7 +158,6 @@ let card;
 const pengiriman = document.querySelector('#pengiriman')
 const pembayaran = document.querySelector('#total-pembayaran')
 const total_produk = <?= $total_harga; ?>;
-$('input[name=subtotal_produk]').val(total_produk)
 
 $('.fw-bold').on('click',function(){
   $('#exampleModal').modal('show');
@@ -184,9 +193,12 @@ $('#provinsi').on('change',function(){
 })
 
 $('select[name=kota]').on('change',function(){
+  $('#pilihan_kurir').hide();
   kota = $(this).val();
   let postal_code = $('option:selected', this).attr('postal_code')
+  let city = $('option:selected', this).attr('nama')
   $('input[name=postal_code]').val(postal_code);
+  $('input[name=city]').val(city);
   $.ajax({
     url: 'http://localhost:8080/UserController/DataKurir',
     type: 'POST',
@@ -197,6 +209,7 @@ $('select[name=kota]').on('change',function(){
 })
 
 $('select[name=kurir]').on('change',function(){
+  $('#pilihan_kurir').show();
   $.ajax({
     url: 'http://localhost:8080/UserController/DataCost',
     type: 'POST',
@@ -218,7 +231,6 @@ $('select[name=kurir]').on('change',function(){
           value = item.children[0].children[1].innerHTML;
           total_pembayaran = parseInt(value) + total_produk;
           $('input[name=subtotal_pengiriman]').val(value)
-          $('input[name=subtotal_keseluruhan]').val(total_pembayaran)
           pembayaran.children[1].innerHTML = view(total_pembayaran)
           pengiriman.children[1].innerHTML = view(value)
         })
@@ -227,7 +239,37 @@ $('select[name=kurir]').on('change',function(){
   })
 })
 
-
+$('#form').on('submit',function(e) {
+  e.preventDefault();
+  $.ajax({
+    method: $(this).attr('method'),
+    url: $(this).attr('action'),
+    data: $(this).serialize(),
+    success: function(data) {
+      document.getElementById('pay-button').onclick = function(){
+        // SnapToken acquired from previous step
+        snap.pay(data.snapToken, {
+          // Optional
+          onSuccess: function(result){
+            jason = JSON.stringify(result);
+            $('input[name=data]').val(jason)
+            $('#form_respond').submit();            
+          },
+          // Optional
+          onPending: function(result){
+            jason = JSON.stringify(result);
+            $('input[name=data]').val(jason)
+            $('#form_respond').submit()
+          },
+          // Optional
+          onError: function(result){
+            
+          }
+        });
+      };
+    }
+  })
+})
 
 
 
