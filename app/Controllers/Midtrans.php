@@ -29,19 +29,14 @@ class Midtrans extends BaseController
             'id'       => 'item2',
             'price'    => 50000,
             'quantity' => 1,
-            'name'     => 'Nike N90'
+            'name'     => 'nike90'
+        ),
+        array(
+            'id'       => 'ongkir',
+            'price'    => 20000,
+            'quantity' => 1,
+            'name'     => 'Pengiriman'
         )
-    );
-
-    // Populate customer's billing address
-    $billing_address = array(
-        'first_name'   => "Andri",
-        'last_name'    => "Setiawan",
-        'address'      => "Karet Belakang 15A, Setiabudi.",
-        'city'         => "Jakarta",
-        'postal_code'  => "51161",
-        'phone'        => "081322311801",
-        'country_code' => 'IDN'
     );
 
     // Populate customer's shipping address
@@ -61,8 +56,7 @@ class Midtrans extends BaseController
         'last_name'        => "Setiawan",
         'email'            => "test@test.com",
         'phone'            => "081322311801",
-        'billing_address'  => $billing_address,
-        'shipping_address' => $shipping_address
+        'shipping_address' => $billing_address
     );
 
     
@@ -72,23 +66,15 @@ class Midtrans extends BaseController
                 'order_id' => rand(),
             ),
             'item_details'        => $items,
-            'customer_details'    => $customer_details
+            'customer_details'    => $customer_details,
         );
          
         
         $data =[
-            'token' => \Midtrans\Snap::getSnapToken($params)
+            'snapToken' => \Midtrans\Snap::getSnapToken($params)
         ];
 
-        return view('mt',$data);
-    }
-
-    public function jason()
-    {
-        $data = [
-            'teks' => 'halo'     
-        ];
-        return $this->respond($data,200);
+        return view('test',$data);
     }
 
     public function hasil()

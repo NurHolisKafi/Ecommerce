@@ -8,11 +8,15 @@
 
 .row .card:hover{
   cursor: pointer;
-  border: 1px solid black;
+  
 }
 
 .choose{
-  transform: scale(1.03);
+  border: 1px solid black;
+}
+
+th{
+  font-weight: 500;
 }
 </style>
 
@@ -61,12 +65,13 @@
                     </div>
                     <div class="row" id="pilihan_kurir">
                     </div>
-                      <a href="keranjang.html" class="btn btn-lg btn-danger ms-sm-0 ms-2" style="font-size: 14px;">Kembali</a>
-                      <button type="submit" class="btn btn-beli btn-lg btn-primary ms-lg-5 ms-md-3 ms-2" style="font-size: 14px;">Beli Sekarang</button>
-                  </form>
+                    <input type="hidden" name="postal_code">
+                    <input type="hidden" name="subtotal_keseluruhan">
+                    <input type="hidden" name="subtotal_produk">
+                    <input type="hidden" name="subtotal_pengiriman">
             </div>
-            <div class="col-md-5 mt-5">
-                <h6 class="fw-bold mb-2">Order list</h6>
+            <div class="col-md-5 mt-3 mb-5">
+                <h5 class="fw-bold mb-3">Order list</h5>
                 <div class="table-responsive-md">
                   <table class="table table-hover table-sm border-5">
                       <thead>
@@ -89,13 +94,28 @@
                         $no++;
                         endforeach; ?>
                       </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>Jumlah</th>
-                          <td id="view-harga"><?= $total_harga; ?></td>
-                        </tr>
-                      </tfoot>
                     </table>
+                </div>
+                <div class="mt-5">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tr>
+                        <th>Subtotal Produk:</th>
+                        <td id="view-harga"><?= $total_harga; ?></td>
+                      </tr>
+                      <tr id="pengiriman">
+                        <th>Subtotal Pengiriman:</th>
+                        <td id="view-harga">0</td>
+                      </tr>
+                      <tr id="total-pembayaran">
+                        <th>Total:</th>
+                        <td id="view-harga">0</td>
+                      </tr>
+                    </table>
+                  </div>
+                    <a href="keranjang.html" class="btn btn-lg btn-danger ms-sm-0 ms-2" style="font-size: 14px;">Kembali</a>
+                    <button type="submit" class="btn btn-beli btn-lg btn-primary ms-lg-5 ms-md-3 ms-2" style="font-size: 14px;">Beli Sekarang</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -125,6 +145,11 @@
 <script>
 let kota;
 let card;
+const pengiriman = document.querySelector('#pengiriman')
+const pembayaran = document.querySelector('#total-pembayaran')
+const total_produk = <?= $total_harga; ?>;
+$('input[name=subtotal_produk]').val(total_produk)
+
 $('.fw-bold').on('click',function(){
   $('#exampleModal').modal('show');
 })
@@ -145,7 +170,6 @@ function view(harga){
 $('#hidden').hide();
 
 $('#provinsi').on('change',function(){
-  console.log($(this).val());
   $.ajax({
     url: 'http://localhost:8080/UserController/DataCity',
     type: 'POST',
@@ -161,6 +185,8 @@ $('#provinsi').on('change',function(){
 
 $('select[name=kota]').on('change',function(){
   kota = $(this).val();
+  let postal_code = $('option:selected', this).attr('postal_code')
+  $('input[name=postal_code]').val(postal_code);
   $.ajax({
     url: 'http://localhost:8080/UserController/DataKurir',
     type: 'POST',
@@ -176,7 +202,7 @@ $('select[name=kurir]').on('change',function(){
     type: 'POST',
     data: {
       tujuan: kota,
-      berat: '1000',
+      berat: '<?= $berat;?>',
       kurir: $(this).val()
     },
     success: function(e){
@@ -184,9 +210,17 @@ $('select[name=kurir]').on('change',function(){
       card = document.querySelectorAll('.card');
       card.forEach(item => {
         item.addEventListener('click',function(){
-          value = item.children[0].children[1].innerHTML; 
-          console.log(value);
-          item.classList.toggle("choose");
+          card.forEach(z => {
+            z.classList.remove("choose")
+          })
+          item.classList.add("choose");
+
+          value = item.children[0].children[1].innerHTML;
+          total_pembayaran = parseInt(value) + total_produk;
+          $('input[name=subtotal_pengiriman]').val(value)
+          $('input[name=subtotal_keseluruhan]').val(total_pembayaran)
+          pembayaran.children[1].innerHTML = view(total_pembayaran)
+          pengiriman.children[1].innerHTML = view(value)
         })
       })
     }

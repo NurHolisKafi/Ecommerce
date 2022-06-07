@@ -68,7 +68,7 @@ class UserModel extends Model
 
     public function view_produkById($id){
         $table = $this->db->table('produk');
-        $table->select('produk.id_produk,produk.nama as nama,harga');
+        $table->select('produk.id_produk,produk.nama as nama,harga,berat');
         $table->where('id_produk',$id);
         return $table->get()->getRowArray();
     }

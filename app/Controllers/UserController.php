@@ -35,7 +35,7 @@ class UserController extends BaseController
         //     ];
         //     array_push($a,$data);
         // };
-        dd($this->model->view_produkById(1));
+        dd($data = $this->model->getCost('500','1000','jne'));
     }
 
 
@@ -61,10 +61,12 @@ class UserController extends BaseController
         $id = $this->request->getPost('id');
         $data_pesanan = array();
         $total_harga = 0;
-         for ($b=0; $b<count($id); $b++){
+        $berat = 0;
+        for ($b=0; $b<count($id); $b++){
             $produk =  $this->model->view_produkById($id[$b]);
             $jumlah = $this->request->getPost("jumlah".$produk['id_produk']);
             $total_harga += $produk['harga'] * $jumlah;
+            $berat += $produk['berat'];
             $data = [
                 'id' => $produk['id_produk'],
                 'nama' => $produk['nama'],
@@ -73,11 +75,14 @@ class UserController extends BaseController
             ];
             array_push($data_pesanan,$data);
         };
+        
         $result = [
             'data_pesanan' => $data_pesanan,
             'provinsi' => $this->model->getAddress("province"),
             'total_harga' => $total_harga,
+            'berat' => $berat,
         ];
+
         return view('Pages/User/Main_page/order',$result);
     }
     
@@ -144,7 +149,7 @@ class UserController extends BaseController
         
         echo "<option selected='selected' disabled>-- Pilih --</option>";
         foreach ($data as $key) {
-            echo "<option value=".$key['city_id'].">";
+            echo "<option value=".$key['city_id']." postal_code=".$key['postal_code'].">";
             echo $key['type']." ".$key['city_name'];
             echo "</option>";
         }

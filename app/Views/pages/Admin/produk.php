@@ -123,7 +123,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="form-label">Berat</label>
-                        <input type="text" class="form-control mt-1 shadow-none" name="berat" required>
+                        <input type="text" class="form-control mt-1 shadow-none" name="berat" placeholder="ukuran gram, ex: 1000" required>
                     </div>
                     <div class="mb-3">
                         <label for="form-label">Category</label>
