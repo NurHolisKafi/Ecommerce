@@ -1,28 +1,38 @@
 <?= $this->extend('template/User/main') ?>
 <?= $this->section('content') ?> 
 
-<div class="wrapper">
-    <div class="inner">
-        <img src="/assets/img2/images/image-1.png" alt="" class="image-1">
-        <form action="">
-            <h3>Have an account?</h3>
-            <div class="form-holder">
-                <span class="lnr lnr-user"></span>
-                <input type="text" class="form-control" placeholder="Username or Phone Number">
+
+
+<div class="d-md-flex half">
+    <div class="bg" style="background-image: url('/assets/img/bg_1.jpg');"></div>
+    <div class="contents">
+      <div class="container">
+        <div class="row align-items-center justify-content-center">
+          <div class="col-md-12">
+            <div class="form-block mx-auto">
+              <div class="text-center mb-5">
+                <h3>Login</h3>
+                <!-- <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p> -->
+              </div>
+              <form action="#" method="post">
+                <div class="form-group first mb-3">
+                  <label for="username">Username</label>
+                  <input type="text" class="form-control mt-2" placeholder="John doe" name="username" id="username">
+                </div>
+                <div class="form-group last mb-5">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control mt-2" placeholder="********" name="pass" id="password">
+                </div>
+                <button class="btn btn-block btn-primary w-100 mb-4"> LOG IN</button>
+				<p>Don't Have a Account ? <a href="/register">REGISTER</a></p>
+              </form>
             </div>
-            <div class="form-holder">
-                <span class="lnr lnr-lock"></span>
-                <input type="password" class="form-control" placeholder="Password">
-            </div>
-            <button>
-                <span>Login</span>
-            </button>
-            <div class="text-center mt-4">
-                <p>Don't have an account? <a href="register.html">Register</a></p>
-            </div>
-        </form>
-        <img src="assets/images/image-2.png" alt="" class="image-2">
-    </div>   
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+		
 
 <?= $this->endSection() ?>

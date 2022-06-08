@@ -1,6 +1,6 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top px-2 shadow shadow-sm" style="z-index: 2;">
     <div class="container p-sm-1">
-      <a class="navbar-brand mx-lg-5" href="#">ArBeauty Store</a>
+      <a class="navbar-brand mx-lg-5" href="/">ArBeauty Store</a>
 
       <!-- searching -->
       <form class="input-group d-md-flex d-none me-md-auto search-navbar" method="POST" action="#">

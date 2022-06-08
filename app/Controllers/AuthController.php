@@ -12,9 +12,12 @@ class AuthController extends BaseController
         $this->model = new AuthModel();
     }
 
+
+
     public function login($id){
         $data = [
             'session' => $this->session,
+            'id' => $id
         ];
         if($id == 1){
             return view('pages/admin/login',$data);

@@ -33,6 +33,7 @@
 		<div class="container-login100" style="background-color: wheat;">
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" action="/AuthController/Auth" method="POST">
+					<input type="hidden" name="id" value="<?= $id;?>">
 					<span class="login100-form-logo">
 						<img src="/assets/login/images/admin.png" alt="" width="90px">
 					</span>

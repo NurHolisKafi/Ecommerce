@@ -7,55 +7,7 @@ use CodeIgniter\Model;
 class UserModel extends Model
 {
 
-    public function getAddress($param)
-    {
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.rajaongkir.com/starter/" . $param,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "GET",
-        CURLOPT_HTTPHEADER => array(
-            "key: fb456c59e23859f60ef66b8c599081de"
-        ),
-        ));
-
-        $response = json_decode(curl_exec($curl),true);
-        $err = curl_error($curl);
-        curl_close($curl);
-
-        $result = $response['rajaongkir']['results'];
-        return $result;
-    }
-
-    public function getCost($destinasi,$berat,$kurir)
-    {
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => "origin=133&destination={$destinasi}&weight={$berat}&courier={$kurir}",
-        CURLOPT_HTTPHEADER => array(
-            "content-type: application/x-www-form-urlencoded",
-            "key: fb456c59e23859f60ef66b8c599081de"
-        ),
-        ));
-
-        $response = json_decode(curl_exec($curl),true);
-        $err = curl_error($curl);
-        curl_close($curl);
-
-        $result = $response['rajaongkir']['results'][0];
-        return $result;
-    }
+    //VIEW
 
     public function view_produk(){
         $table = $this->db->table('produk');
@@ -118,7 +70,7 @@ class UserModel extends Model
         return 'halo';
     }
 
-
+    // INSERT
     public function add_keranjang($id,$jumlah){
         $table = $this->db->table('keranjang');
         $data = [
@@ -128,6 +80,65 @@ class UserModel extends Model
         $table->set($data);
         $query = $table->insert();
         return $query;
+    }
+
+    public function add_detailOrder($id_order,$id_produk,$jum){
+        $table = $this->db->table('detail_order');
+        $data = [
+            'id_order' => $id_order,
+            'id_produk' => $id_produk,
+            'jumlah' => $jum
+        ];
+        $table->set($data);
+        return $table->insert();
+    }
+    //DATA
+    public function getAddress($param){
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://api.rajaongkir.com/starter/" . $param,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+            "key: fb456c59e23859f60ef66b8c599081de"
+        ),
+        ));
+
+        $response = json_decode(curl_exec($curl),true);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        $result = $response['rajaongkir']['results'];
+        return $result;
+    }
+
+    public function getCost($destinasi,$berat,$kurir){
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "origin=133&destination={$destinasi}&weight={$berat}&courier={$kurir}",
+        CURLOPT_HTTPHEADER => array(
+            "content-type: application/x-www-form-urlencoded",
+            "key: fb456c59e23859f60ef66b8c599081de"
+        ),
+        ));
+
+        $response = json_decode(curl_exec($curl),true);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        $result = $response['rajaongkir']['results'][0];
+        return $result;
     }
 
     public function jumlah_keranjang(){

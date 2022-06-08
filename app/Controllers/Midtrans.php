@@ -69,8 +69,14 @@ class Midtrans extends BaseController
 
     public function hasil()
     {
-        $hasil = json_decode($this->request->getPost('data'),true);
-        dd($hasil);
+        $id_produk = $this->request->getPost('id');
+        $jumlah = $id_produk = $this->request->getPost('jumlah');
+        $respond_pembayaran = json_decode($this->request->getPost('data'),true);
+        for ($i=0; $i < count($id_produk); $i++) { 
+            $this->model->$detail_order($respond_pembayaran['order_id'],$id_produk[$i],$jumlah[$i]);
+        }
+
+        
         // $status = \Midtrans\Transaction::status('1891786488');
 
         // $hasil = (array) json_decode($this->request->getpost('jason'));

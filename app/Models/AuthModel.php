@@ -6,13 +6,13 @@ use CodeIgniter\Model;
 
 class AuthModel extends Model
 {
-    public function login($nama,$pass,int $status = 0){
-        if ($status != 0) {
+    public function login($nama,$pass,$status){
+        if ($status == 1) {
             $table = $this->db->table('admin');
             $table->where(['nama' => $nama,'password' => $pass]);
             return $table->get()->getRowArray();;
-        }else {
-            $table = $this->db->table('account');
+        }elseif ($status == 2) {
+            $table = $this->db->table('users');
             $table->where(['nama' => $nama,'password' => $pass]);
             return $table->get()->getRowArray();;
         }
