@@ -14,12 +14,11 @@ class UserController extends BaseController
     }
 
     public function tes(){
+        // $id = $this->request->getPost('id');
+        // $jumlah = $this->request->getPost('jumlah');
         
-        $id = $this->request->getPost('id');
-        $jumlah = $this->request->getPost('jumlah');
-        
-        $a = array();
-        dd($data = $this->model->getCost('500','1000','jne'));
+        // $a = array();
+        dd($data = $this->model->delete_keranjang(1,6));
     }
 
 
@@ -43,6 +42,9 @@ class UserController extends BaseController
     
     public function Checkout(){
         $id = $this->request->getPost('id');
+        if ($id == null) {
+            return redirect()->back()->with('error','Checkbox tidak boleh kosong');
+        }
         $data_pesanan = array();
         $total_harga = 0;
         $berat = 0;
@@ -84,7 +86,8 @@ class UserController extends BaseController
     }
     
     public function Register(){
-        return view('Pages/User/Main_page/register');
+
+        return view('Pages/User/Main_page/register',['validation' => $this->validation]);
     }
 
     // VIEW AKUN PAGE
@@ -114,11 +117,15 @@ class UserController extends BaseController
         if(!$this->validate([
             'username' => [
                 'rules' => 'is_unique[users.nama]',
-                'error' => '{field} sudah ada'
+                'errors' => [
+                    'is_unique' => '{field} sudah ada'
+                ]
             ],
             'email' => [
                 'rules' => 'valid_emails',
-                'error' => '{field} tidak valid'
+                'errors' => [
+                    'valid_emails' => '{field} tidak valid'
+                ]
             ]
         ])){
             return redirect()->back()->withInput();
@@ -137,7 +144,14 @@ class UserController extends BaseController
         $total = $this->request->getPost('jumlah');
         $id_user = $this->session->get('data')['id_user'];
         $hasil = $this->model->add_keranjang($id_produk,$total,$id_user);
-        echo "sukses";
+        return redirect()->back()->with('success','Berhasil ditambahkan ke keranjang');
+    }
+
+    //DELETE
+    public function Delete_keranjang(){
+        $id = $this->request->getGet('id');
+        $this->model->delete_keranjang($id);
+        return redirect()->back();
     }
 
     //Data

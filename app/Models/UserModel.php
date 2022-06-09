@@ -50,7 +50,7 @@ class UserModel extends Model
 
     public function view_keranjang($id){
         $table = $this->db->table('keranjang');
-        $table->select('produk.id_produk,produk.nama as nama,gambar.nama as gambar,jumlah,produk.harga as harga');
+        $table->select('id_keranjang,produk.id_produk,produk.nama as nama,gambar.nama as gambar,jumlah,produk.harga as harga');
         $table->join('produk','keranjang.id_produk = produk.id_produk');
         $table->join('gambar', 'gambar.id_produk = produk.id_produk');
         $table->where('keranjang.id_user',$id);
@@ -123,6 +123,16 @@ class UserModel extends Model
         $table->set($data);
         return $table->insert();
     }
+
+    //DELETE
+    public function delete_keranjang($id){
+        $table = $this->db->table('keranjang');
+        $table->where('id_keranjang',$id);
+        return $table->delete();
+    }
+
+
+
     //DATA
     public function getAddress($param){
         $curl = curl_init();

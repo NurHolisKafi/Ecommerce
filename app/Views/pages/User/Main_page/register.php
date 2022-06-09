@@ -15,11 +15,17 @@
               <form action="/UserController/add_user" method="post">
                 <div class="form-group first mb-3">
                   <label for="username">Username</label>
-                  <input type="text" class="form-control mt-2" placeholder="John doe" name="username" id="username">
+                  <input type="text" class="form-control mt-2 <?= ($validation->hasError('username')) ? 'is-invalid' : '' ?>" placeholder="John doe" name="username" id="username">
+                  <div class="invalid-feedback">
+                    <?= $validation->getError('username'); ?>
+                  </div>
                 </div>
                 <div class="form-group first mb-3">
                   <label for="email">Email</label>
-                  <input type="email" class="form-control mt-2" placeholder="Johndoe@gmail.com" name="email" id="email">
+                  <input type="email" class="form-control mt-2 <?= ($validation->hasError('email'))? 'is-invalid' : '' ?>" placeholder="Johndoe@gmail.com" name="email" id="email">
+                  <div class="invalid-feedback">
+                    <?= $validation->getError('email'); ?>
+                  </div>
                 </div>
                 <div class="form-group first mb-3">
                   <label for="notelp">No Telepon</label>

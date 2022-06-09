@@ -5,6 +5,12 @@
   </div>
   <div class="container bg-white">
     <div class="p-3">
+      <?php if(isset($_SESSION['error'])): ?>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <?= $_SESSION['error']; ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <?php endif; ?>
       <div class="garis-nama"></div>
       <div class="form-check">
         <input class="form-check-input shadow-none" type="checkbox" value="" id="checkbox-all">
@@ -20,7 +26,7 @@
       <?php foreach($data as $key): ?>
       <div class="col-8 col-lg-3 col-md-4 p-4">
         <div class="container p-3 border border-danger position-relative" style="border-radius: 10px;">
-          <a href="" class="btn-close btn-close-white" aria-label="Close"></a>
+          <a href="/UserController/Delete_keranjang?id=<?=$key['id_keranjang'];?>" class="btn-close shadow-none" aria-label="Close"></a>
             <div class="form-check my-2">
               <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="id[]" value="<?=$key['id_produk'];?>">
               <label class="form-check-label" for="flexCheckDefault">
@@ -50,7 +56,7 @@
   <div class="container bg-white p-3 my-2">
     <div class="row">
       <div class="col">
-        <button class="btn btn-secondary" style="font-size: 17px;">Checkout</button>
+        <button class="btn btn-secondary ms-auto" style="font-size: 17px;">Checkout</button>
       </div>
     </div>
     </form>
