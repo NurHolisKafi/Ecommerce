@@ -28,7 +28,7 @@ class Midtrans extends BaseController
                 'id' => 'item'.($i+1),
                 'price' => $produk['harga'],
                 'quantity' => $jumlah[$i],
-                'name' => $produk['nama']
+                'name' => $produk['nama'],
             ];
             array_push($item,$data);
         }
@@ -49,7 +49,8 @@ class Midtrans extends BaseController
             'first_name'       => $this->request->getPost('nama'),
             'email'            => $this->request->getPost('email'),
             'phone'            => $this->request->getPost('nohp'),
-            'shipping_address' => $shipping_address
+            'shipping_address' => $shipping_address,
+            'billing_address'  => $shipping_address,            
         );
         
         $params = array(
@@ -69,14 +70,15 @@ class Midtrans extends BaseController
 
     public function hasil()
     {
+        
         $id_produk = $this->request->getPost('id');
         $jumlah = $id_produk = $this->request->getPost('jumlah');
         $respond_pembayaran = json_decode($this->request->getPost('data'),true);
         for ($i=0; $i < count($id_produk); $i++) { 
-            $this->model->$detail_order($respond_pembayaran['order_id'],$id_produk[$i],$jumlah[$i]);
+            $this->model->add_detailOrder($respond_pembayaran['order_id'],$id_produk[$i],$jumlah[$i]);
         }
-
-        
+        $this->model->add_order($respond_pembayaran['order_id'],$this->session->get('data')['id_user'],$respond_pembayaran['gross_amount'],$respond_pembayaran['transaction_time'],$respond_pembayaran['payment_type'],$respond_pembayaran['transaction_status']);
+        echo 'sukses';
         // $status = \Midtrans\Transaction::status('1891786488');
 
         // $hasil = (array) json_decode($this->request->getpost('jason'));

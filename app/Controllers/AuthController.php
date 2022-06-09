@@ -58,5 +58,12 @@ class AuthController extends BaseController
         }
 
     }
+
+    public function logout(){
+        $this->session->remove('status');
+        $this->session->remove('data');
+        return redirect()->to('/');
+    }
+
     
 }

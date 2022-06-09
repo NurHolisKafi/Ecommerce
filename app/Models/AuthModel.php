@@ -10,11 +10,11 @@ class AuthModel extends Model
         if ($status == 1) {
             $table = $this->db->table('admin');
             $table->where(['nama' => $nama,'password' => $pass]);
-            return $table->get()->getRowArray();;
+            return $table->get()->getRowArray();
         }elseif ($status == 2) {
             $table = $this->db->table('users');
             $table->where(['nama' => $nama,'password' => $pass]);
-            return $table->get()->getRowArray();;
+            return $table->get()->getRowArray();
         }
     }
 }

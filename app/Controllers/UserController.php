@@ -19,22 +19,6 @@ class UserController extends BaseController
         $jumlah = $this->request->getPost('jumlah');
         
         $a = array();
-        // for ($i=0; $i<3; $i++){
-        //     $data = [
-        //         'id' => $i,
-        //         'nama' => 'ah'
-        //     ];
-        //     array_push($a,$data);
-        // };
-
-        // for ($b=0; $b<count($id); $b++){
-        //     $data = [
-        //         'id' => $id[$b],
-        //         'jumlah' => $jumlah[$b],
-        //         'total' => $this->model->harga_produk($id[$b])['harga'] * $jumlah[$b]
-        //     ];
-        //     array_push($a,$data);
-        // };
         dd($data = $this->model->getCost('500','1000','jne'));
     }
 
@@ -52,7 +36,7 @@ class UserController extends BaseController
 
     public function Keranjang(){
         $result = [
-            'data' => $this->model->view_keranjang()
+            'data' => $this->model->view_keranjang($this->session->get('data')['id_user'])
         ];
         return view('Pages/User/Main_page/keranjang',$result);
     }
@@ -124,21 +108,35 @@ class UserController extends BaseController
         return view('Pages/User/Profile_page/change_pass');
     }
 
+
     //Insert
-    public function Add_keranjang(){
+    public function Add_User(){
         if(!$this->validate([
-            'id_produk' => [
-                'rules' => 'is_unique[keranjang.id_produk]',
-                'errors' => [
-                    'is_unique' => '{field} produk sudah ada'
-                ]
+            'username' => [
+                'rules' => 'is_unique[users.nama]',
+                'error' => '{field} sudah ada'
+            ],
+            'email' => [
+                'rules' => 'valid_emails',
+                'error' => '{field} tidak valid'
             ]
         ])){
             return redirect()->back()->withInput();
         };
-        $id_produk = $this->request->getPost('id_produk');
+
+        $nama = $this->request->getPost('username');
+        $email = $this->request->getPost('email');
+        $notelp = $this->request->getPost('notelp');
+        $pass = $this->request->getPost('pass');
+        $this->model->add_User($nama,$email,$notelp,$pass);
+        return redirect()->to('/login');
+    }
+
+    public function Add_keranjang(){
+        $id_produk = $this->request->getPost('id');
         $total = $this->request->getPost('jumlah');
-        $hasil = $this->model->add_keranjang($id_produk,$total);
+        $id_user = $this->session->get('data')['id_user'];
+        $hasil = $this->model->add_keranjang($id_produk,$total,$id_user);
         echo "sukses";
     }
 

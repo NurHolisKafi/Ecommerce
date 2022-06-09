@@ -48,12 +48,13 @@ class UserModel extends Model
         return $query;
     }
 
-    public function view_keranjang(){
+    public function view_keranjang($id){
         $table = $this->db->table('keranjang');
-        $table->select('produk.id_produk,produk.nama as nama,gambar.nama as gambar,jumlah, produk.harga as harga');
+        $table->select('produk.id_produk,produk.nama as nama,gambar.nama as gambar,jumlah,produk.harga as harga');
         $table->join('produk','keranjang.id_produk = produk.id_produk');
         $table->join('gambar', 'gambar.id_produk = produk.id_produk');
-        $table->groupBy("produk.id_produk");
+        $table->where('keranjang.id_user',$id);
+        $table->groupBy("keranjang.id_keranjang");
         $query = $table->get()->getResultArray();
         return $query;
     }
@@ -71,11 +72,25 @@ class UserModel extends Model
     }
 
     // INSERT
-    public function add_keranjang($id,$jumlah){
+    public function add_user($nama,$email,$notelp,$pass){
+        $table = $this->db->table('users');
+        $data = [
+            'nama' => $nama,
+            'email' => $email,
+            'notelp' => $notelp,
+            'password' => $pass
+        ];
+        $table->set($data);
+        $query = $table->insert();
+        return $query;
+    }
+
+    public function add_keranjang($id,$jumlah,$id_user){
         $table = $this->db->table('keranjang');
         $data = [
             'id_produk' => $id,
             'jumlah' => $jumlah,
+            'id_user' => $id_user
         ];
         $table->set($data);
         $query = $table->insert();
@@ -88,6 +103,22 @@ class UserModel extends Model
             'id_order' => $id_order,
             'id_produk' => $id_produk,
             'jumlah' => $jum
+        ];
+        $table->set($data);
+        return $table->insert();
+    }
+
+    public function add_order($id_order,$id_user,$total,$waktu,$metode,$status,$va_number = 'Tidak ada',$pdf = 'Tidak ada'){
+        $table = $this->db->table('orders');
+        $data = [
+            'id_users' => $id_user,
+            'id_order' => $id_order,
+            'total' => $total,
+            'waktu' => $waktu,
+            'metode_pembayaran' => $metode,
+            'status' => $status,
+            'va_number' => $va_number,
+            'pdf_url' => $pdf,
         ];
         $table->set($data);
         return $table->insert();
@@ -141,9 +172,11 @@ class UserModel extends Model
         return $result;
     }
 
-    public function jumlah_keranjang(){
+    public function get_keranjang($id){
         $table = $table = $this->db->table('keranjang');
-        return $table->countAll();
+        $table->selectCount('id_produk');
+        $table->where('id_user',$id);
+        return $table->get()->getRowArray();
     }
 
     

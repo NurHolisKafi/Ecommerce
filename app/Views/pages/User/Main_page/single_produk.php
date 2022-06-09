@@ -25,11 +25,12 @@
                     <span class="mx-2">tersisa <?=$detail['stok'];?> buah</span>
                 </div>
                 <?= form_open('/UserController/Add_keranjang'); ?>
-                <?= form_hidden('id_produk',$detail['id_produk']); ?>
+                <?= form_hidden('id',$detail['id_produk']); ?>
                 <input type="hidden" name="jumlah" id="total" value="1">
+                <input type="hidden" name="jumlah<?= $detail['id_produk']; ?>" id="jum_hidden" value="1">
                 <div class="btn-produk mt-5">
                     <button class="btn btn-danger text-white btn-lg me-2 btn-custom"><i class="fa-solid fa-cart-shopping me-2" data-bs-toggle="modal" data-bs-target="#notif"></i>Masukkan Keranjang</button>
-                    <a href="" class="btn btn-primary text-white btn-lg me-2 btn-custom" >Beli Sekarang</a>
+                    <button class="btn btn-primary text-white btn-lg me-2 btn-custom" id="btn_beli" >Beli Sekarang</button>
                 </div>
                 <div class="mt-4">
                   <div class="card deskripsi border border-dark">
@@ -94,6 +95,12 @@
     var total = document.querySelector('#total');
     var a = angka.textContent;   
 
+    $('#btn_beli').on('click',function(e) {
+      e.preventDefault();
+      $('input[name=id]').attr('name','id[]')
+      $('form').attr('action','/checkout')
+      $('form').submit();
+    })
 
     //untuk format view harga
     function view(harga){
@@ -111,6 +118,7 @@
     function change(){
       angka.textContent=a;
       total.value = a;
+      $('#jum_hidden').val(a);
     }
 
     function tambah(){

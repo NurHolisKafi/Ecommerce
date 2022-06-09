@@ -116,7 +116,7 @@ th{
                       </tr>
                     </table>
                   </div>
-                    <a href="keranjang.html" class="btn btn-lg btn-danger ms-sm-0 ms-2 shadow-none" style="font-size: 14px;">Kembali</a>
+                    <a href="/" class="btn btn-lg btn-danger ms-sm-0 ms-2 shadow-none" style="font-size: 14px;">Kembali</a>
                     <button type="submit" id="pay-button" class="btn btn-beli btn-lg btn-primary ms-lg-5 ms-md-3 ms-2 shadow-none" style="font-size: 14px;">Beli Sekarang</button>
                     </form>
                 </div>
