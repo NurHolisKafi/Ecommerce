@@ -18,7 +18,7 @@ class UserController extends BaseController
         // $jumlah = $this->request->getPost('jumlah');
         
         // $a = array();
-        dd($data = $this->model->delete_keranjang(1,6));
+        dd(\Midtrans\Transaction::status('1973127621'));
     }
 
 
@@ -32,54 +32,6 @@ class UserController extends BaseController
         ];
         return view('Pages/User/Main_page/home',$result);
     }
-
-    public function Keranjang(){
-        $result = [
-            'data' => $this->model->view_keranjang($this->session->get('data')['id_user'])
-        ];
-        return view('Pages/User/Main_page/keranjang',$result);
-    }
-    
-    public function Checkout(){
-        $id = $this->request->getPost('id');
-        if ($id == null) {
-            return redirect()->back()->with('error','Checkbox tidak boleh kosong');
-        }
-        $data_pesanan = array();
-        $total_harga = 0;
-        $berat = 0;
-        for ($b=0; $b<count($id); $b++){
-            $produk =  $this->model->view_produkById($id[$b]);
-            $jumlah = $this->request->getPost("jumlah".$produk['id_produk']);
-            $total_harga += $produk['harga'] * $jumlah;
-            $berat += $produk['berat'];
-            $data = [
-                'id' => $produk['id_produk'],
-                'nama' => $produk['nama'],
-                'jumlah' => $jumlah,
-                'total' => $produk['harga'] * $jumlah
-            ];
-            array_push($data_pesanan,$data);
-        };
-        
-        $result = [
-            'data_pesanan' => $data_pesanan,
-            'provinsi' => $this->model->getAddress("province"),
-            'total_harga' => $total_harga,
-            'berat' => $berat,
-        ];
-
-        return view('Pages/User/Main_page/order',$result);
-    }
-    
-    public function Single_produk(){
-        $id = $this->request->getGet('id');
-        $result = [
-            'img' => $this->model->view_img($id),
-            'detail' => $this->model->detail_produk($id)
-        ];
-        return view('Pages/User/Main_page/single_produk',$result);
-    }
     
     public function Login(){
         return view('Pages/User/Main_page/login');
@@ -89,6 +41,80 @@ class UserController extends BaseController
 
         return view('Pages/User/Main_page/register',['validation' => $this->validation]);
     }
+
+    public function Single_produk(){
+        $id = $this->request->getGet('id');
+        $result = [
+            'img' => $this->model->view_img($id),
+            'detail' => $this->model->detail_produk($id)
+        ];
+        return view('Pages/User/Main_page/single_produk',$result);
+    }
+
+    public function Keranjang(){
+        $result = [
+            'data' => $this->model->view_keranjang($this->session->get('data')['id_user'])
+        ];
+        return view('Pages/User/Main_page/keranjang',$result);
+    }
+    
+    public function Checkout(){
+        
+        $id = $this->request->getPost('id');
+        $total_harga = 0;
+        $berat = 0;
+        if ($this->request->getPost('status') != null) {
+            $produk =  $this->model->view_produkById($id);
+            $jumlah = $this->request->getPost("jumlah");
+            $total_harga += $produk['harga'] * $jumlah;
+            $berat += $produk['berat'];
+            $data_pesanan = [
+                [
+                    'id' => $produk['id_produk'],
+                    'nama' => $produk['nama'],
+                    'jumlah' => $jumlah,
+                    'total' => $produk['harga'] * $jumlah
+                ]
+            ];
+            $result = [
+                'data_pesanan' => $data_pesanan,
+                'provinsi' => $this->model->getAddress("province"),
+                'total_harga' => $total_harga,
+                'berat' => $berat,
+            ];
+    
+            return view('Pages/User/Main_page/order',$result);
+        }else {
+
+            if ($id == null) {
+                return redirect()->back()->with('error','Checkbox tidak boleh kosong');
+            }
+            $data_pesanan = array();
+            for ($b=0; $b<count($id); $b++){
+                $produk =  $this->model->view_keranjangCheckout($id[$b]);
+                $jumlah = $this->request->getPost("jumlah".$produk['id_keranjang']);
+                $total_harga += $produk['harga'] * $jumlah;
+                $berat += $produk['berat'];
+                $data = [
+                    'id' => $produk['id_produk'],
+                    'nama' => $produk['nama'],
+                    'jumlah' => $jumlah,
+                    'total' => $produk['harga'] * $jumlah
+                ];
+                array_push($data_pesanan,$data);
+            };
+            $result = [
+                'data_pesanan' => $data_pesanan,
+                'provinsi' => $this->model->getAddress("province"),
+                'total_harga' => $total_harga,
+                'berat' => $berat,
+            ];
+    
+            return view('Pages/User/Main_page/order',$result);
+        }
+    }
+    
+    
 
     // VIEW AKUN PAGE
     public function Profile(){
@@ -100,7 +126,11 @@ class UserController extends BaseController
     }
 
     public function Order_list(){
-        return view('Pages/User/Profile_page/order');
+        // dd();
+        $data =[
+            'order' => $this->model->view_order($this->session->get('data')['id_user']),
+        ];
+        return view('Pages/User/Profile_page/order',$data);
     }
 
     public function Edit_profile(){
@@ -196,5 +226,26 @@ class UserController extends BaseController
                     </div>
                   </div>";
         }
+    }
+
+    public function Data_detailOrder($id_order){
+        $detail = $this->model->view_detailOrder($id_order);
+        $no=1;
+        foreach ($detail as $key) {
+            echo "<tr>
+                  <td>".$no."</td>
+                  <td>".$key['nama']."</td>
+                  <td>".$key['jumlah']."</td>
+                </tr>";
+            $no++;
+        }
+    }
+
+    public function Data_statusOrder($id_order){
+        $result = [
+            'status' => \Midtrans\Transaction::status($id_order)->transaction_status,
+        ];
+
+        return $this->respond($result);
     }
 }

@@ -23,17 +23,11 @@ class AdminController extends BaseController
     }
 
     public function test(){
-        $data = [
-            'category' => $this->model->data_category(1)
-        ];
-        return $this->respond($data,200);
-    }
-
-
-    //token Midtrans
-    public function SnapToken($param){
-        $token = \Midtrans\Snap::getSnapToken($params);
-        return $token;
+        // $data = [
+        //     'category' => $this->model->data_category(1)
+        // ];
+        // return $this->respond($data,200);
+        dd($this->model->view_order());
     }
 
     //View
@@ -47,7 +41,8 @@ class AdminController extends BaseController
 
     public function order(){
         $result = [
-            'data' => $this->model->view_order()
+            'data' => $this->model->view_order(),
+            'status' => $this->model->view_status(),
         ];
         return view('pages/Admin/order',$result);
     }
@@ -65,5 +60,28 @@ class AdminController extends BaseController
         return redirect()->to('/a/account');
     }
 
+    //UPDATE
+    public function UpdateOrder(){
+        $id_order = $this->request->getPost('id');
+        $resi = $this->request->getPost('noresi');
+        $id_status = $this->request->getPost('id_status');
+        $this->model->update_order($id_order,$resi,$id_status);
+        return redirect()->back();
+    }
+
+
+    //Data
+    public function Data_detailOrder($id_order){
+        $detail = $this->model->view_detailOrder($id_order);
+        $no=1;
+        foreach ($detail as $key) {
+            echo "<tr>
+                  <td>".$no."</td>
+                  <td>".$key['nama']."</td>
+                  <td>".$key['jumlah']."</td>
+                </tr>";
+            $no++;
+        }
+    }
 
 }

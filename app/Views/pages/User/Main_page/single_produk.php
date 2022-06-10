@@ -32,8 +32,8 @@
           </div>
           <?= form_open('/UserController/Add_keranjang'); ?>
           <?= form_hidden('id',$detail['id_produk']); ?>
+          <input type="hidden" name="status" value="beli_sekarang">
           <input type="hidden" name="jumlah" id="total" value="1">
-          <input type="hidden" name="jumlah<?= $detail['id_produk']; ?>" id="jum_hidden" value="1">
           <div class="btn-produk mt-5">
               <button class="btn btn-danger text-white btn-lg me-2 btn-custom"><i class="fa-solid fa-cart-shopping me-2" data-bs-toggle="modal" data-bs-target="#notif"></i>Masukkan Keranjang</button>
               <button class="btn btn-primary text-white btn-lg me-2 btn-custom" id="btn_beli" >Beli Sekarang</button>
@@ -88,7 +88,6 @@
     
     $('#btn_beli').on('click',function(e) {
       e.preventDefault();
-      $('input[name=id]').attr('name','id[]')
       $('form').attr('action','/checkout')
       $('form').submit();
     })

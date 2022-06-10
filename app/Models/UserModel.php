@@ -59,6 +59,14 @@ class UserModel extends Model
         return $query;
     }
 
+    public function view_keranjangCheckout($id){
+        $table = $this->db->table('keranjang');
+        $table->select('id_keranjang,produk.id_produk,produk.nama as nama,harga,berat');
+        $table->join('produk','keranjang.id_produk = produk.id_produk');
+        $table->where('id_keranjang',$id);
+        return $table->get()->getRowArray();
+    }
+
     public function detail_produk($id){
         $table = $this->db->table('produk');
         $table->select('id_produk,nama,harga,stok,deskripsi');
@@ -67,8 +75,21 @@ class UserModel extends Model
         return $query;
     }
 
-    public function view_order(){
-        return 'halo';
+    public function view_order($id){
+        $table = $this->db->table('orders');
+        $table->select('id_order,total,waktu,metode_pembayaran,resi,status_pengiriman.nama as status');
+        $table->join('status_pengiriman','status_pengiriman.id_status = orders.id_status');
+        $table->where('id_users',$id);
+        $table->groupBy("waktu");
+        return $table->get()->getResultArray();
+    }
+
+    public function view_detailOrder($id){
+        $table = $this->db->table('detail_order');
+        $table->select('produk.nama,jumlah');
+        $table->join('produk','detail_order.id_produk = produk.id_produk');
+        $table->where('id_order',$id);
+        return $table->get()->getResultArray();
     }
 
     // INSERT
@@ -108,7 +129,7 @@ class UserModel extends Model
         return $table->insert();
     }
 
-    public function add_order($id_order,$id_user,$total,$waktu,$metode,$status,$va_number = 'Tidak ada',$pdf = 'Tidak ada'){
+    public function add_order($id_order,$id_user,$total,$waktu,$metode,$status,$pdf = 'Tidak ada'){
         $table = $this->db->table('orders');
         $data = [
             'id_users' => $id_user,
@@ -116,8 +137,7 @@ class UserModel extends Model
             'total' => $total,
             'waktu' => $waktu,
             'metode_pembayaran' => $metode,
-            'status' => $status,
-            'va_number' => $va_number,
+            'id_status' => $status,
             'pdf_url' => $pdf,
         ];
         $table->set($data);

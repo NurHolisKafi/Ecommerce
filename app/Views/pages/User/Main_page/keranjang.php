@@ -28,7 +28,7 @@
         <div class="container p-3 border border-danger position-relative" style="border-radius: 10px;">
           <a href="/UserController/Delete_keranjang?id=<?=$key['id_keranjang'];?>" class="btn-close shadow-none" aria-label="Close"></a>
             <div class="form-check my-2">
-              <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="id[]" value="<?=$key['id_produk'];?>">
+              <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="id[]" value="<?=$key['id_keranjang'];?>">
               <label class="form-check-label" for="flexCheckDefault">
                 Pilih
               </label>
@@ -43,7 +43,7 @@
                   <button type="button" class="btn btn-light border shadow-none btn-sm"><i class="fa-solid fa-minus"></i></button>
                   <span class="mx-2" style="font-size: larger;"><?=$key['jumlah'];?></span>
                   <button type="button" class="btn btn-light border shadow-none btn-sm"><i class="fa-solid fa-plus"></i></button>
-                  <input type="hidden" name="jumlah<?=$key['id_produk'];?>" value="0">
+                  <input type="hidden" name="jumlah<?=$key['id_keranjang'];?>" value="0">
                 </div>
               </div>
             </div>

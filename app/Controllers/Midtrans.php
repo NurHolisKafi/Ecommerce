@@ -72,25 +72,21 @@ class Midtrans extends BaseController
     {
         
         $id_produk = $this->request->getPost('id');
-        $jumlah = $id_produk = $this->request->getPost('jumlah');
+        $jumlah =  $this->request->getPost('jumlah');
         $respond_pembayaran = json_decode($this->request->getPost('data'),true);
-        for ($i=0; $i < count($id_produk); $i++) { 
+        if ($respond_pembayaran['transaction_status'] == 'pending') {
+            $status = 1;
+        }else if($respond_pembayaran['transaction_status'] == 'settlemant'){
+            $status = 2;
+        }
+        for ($i=0; $i < count($id_produk); $i++) {
             $this->model->add_detailOrder($respond_pembayaran['order_id'],$id_produk[$i],$jumlah[$i]);
         }
-        $this->model->add_order($respond_pembayaran['order_id'],$this->session->get('data')['id_user'],$respond_pembayaran['gross_amount'],$respond_pembayaran['transaction_time'],$respond_pembayaran['payment_type'],$respond_pembayaran['transaction_status']);
-        echo 'sukses';
-        // $status = \Midtrans\Transaction::status('1891786488');
-
-        // $hasil = (array) json_decode($this->request->getpost('jason'));
-        
-        // $data = [
-        //     'teks' => $hasil 
-        // ];
-
-        
-        // dd($status);
-        // foreach ($hasil as $key) {
-        //     echo "{$key->pdf_url}";
-        // }
+        if (isset($respond_pembayaran['pdf_url'])) {
+            $this->model->add_order($respond_pembayaran['order_id'],$this->session->get('data')['id_user'],$respond_pembayaran['gross_amount'],$respond_pembayaran['transaction_time'],$respond_pembayaran['payment_type'],$status,$respond_pembayaran['pdf_url']);
+        }else {
+            $this->model->add_order($respond_pembayaran['order_id'],$this->session->get('data')['id_user'],$respond_pembayaran['gross_amount'],$respond_pembayaran['transaction_time'],$respond_pembayaran['payment_type'],$status);
+        }
+        return redirect()->to('/myorder');
     }
 }

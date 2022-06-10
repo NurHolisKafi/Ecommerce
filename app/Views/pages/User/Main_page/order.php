@@ -20,6 +20,7 @@ th{
 }
 </style>
 
+
 <div class="container-fluid single-produk bg-white">
     <div class="container p-5">
         <div class="row justify-content-between">
@@ -253,17 +254,35 @@ $('#form').on('submit',function(e) {
           onSuccess: function(result){
             jason = JSON.stringify(result);
             $('input[name=data]').val(jason)
-            $('#form_respond').submit();            
+            Swal.fire({
+              icon: 'success',
+              title: 'Pesanan Berhasil',
+              showConfirmButton: false,
+              timer: 3000
+            })
+            setTimeout(function() { $('#form_respond').submit(); }, 3000);            
           },
           // Optional
           onPending: function(result){
-            jason = JSON.stringify(result);
+            jason = JSON.stringify(result)
             $('input[name=data]').val(jason)
-            $('#form_respond').submit()
+            Swal.fire({
+              icon: 'success',
+              title: 'Pesanan Berhasil',
+              showConfirmButton: false,
+              timer: 3000
+            })
+            setTimeout(function() { $('#form_respond').submit(); }, 3000);
+            
+            
           },
           // Optional
           onError: function(result){
-            
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+            })
           }
         });
       };
