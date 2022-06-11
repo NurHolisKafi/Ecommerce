@@ -26,7 +26,6 @@ class AdminModel extends Model
         $table->select('id_order,total,waktu,users.email as email,status_pengiriman.nama as status,resi');
         $table->join('status_pengiriman','status_pengiriman.id_status = orders.id_status');
         $table->join('users','users.id_user = orders.id_users');
-        $table->groupBy("status_pengiriman.id_status");
         return $table->get()->getResultArray();
     }
 
@@ -43,10 +42,11 @@ class AdminModel extends Model
         return $table->get()->getResultArray();
     }
 
+    //UPDATE
     public function update_order($id,$resi,$id_status){
-        $table = $this->db->table('status_pengiriman');
+        $table = $this->db->table('orders');
         $data = [
-            'nama' => $nama,
+            'resi' => $resi,
             'id_status' => $id_status
         ];
         

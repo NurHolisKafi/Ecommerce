@@ -62,26 +62,12 @@ class AdminController extends BaseController
 
     //UPDATE
     public function UpdateOrder(){
-        $id_order = $this->request->getPost('id');
+        $id_order = $this->request->getPost('id_order');
         $resi = $this->request->getPost('noresi');
-        $id_status = $this->request->getPost('id_status');
+        $id_status = $this->request->getPost('status');
         $this->model->update_order($id_order,$resi,$id_status);
         return redirect()->back();
     }
 
-
-    //Data
-    public function Data_detailOrder($id_order){
-        $detail = $this->model->view_detailOrder($id_order);
-        $no=1;
-        foreach ($detail as $key) {
-            echo "<tr>
-                  <td>".$no."</td>
-                  <td>".$key['nama']."</td>
-                  <td>".$key['jumlah']."</td>
-                </tr>";
-            $no++;
-        }
-    }
 
 }

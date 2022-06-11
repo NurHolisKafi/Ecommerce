@@ -2,41 +2,6 @@
 <?= $this->section('content') ?>
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-10">
-              <table class="table table-hover table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">No</th>
-                  <th scope="col">Produk</th>
-                  <th scope="col">Jumlah</th>
-                </tr>
-              </thead>
-              <tbody id="table_body">
-              </tbody>
-            </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="modal fade" id="Edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -46,7 +11,7 @@
         </div>
         <div class="modal-body">
             <div class="container-fluid">
-            <?= form_open('/ProdukController/Insert','id="form_produk"'); ?>
+            <?= form_open('/AdminController/UpdateOrder','id="form_edit"'); ?>
                 <input type="hidden" name="id_order">
                 <div class="mb-3">
                     <label for="form-label">No Resi</label>
@@ -85,22 +50,16 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th width="100px">Pesanan</th>
-                        <th width="90px">Total</th>
-                        <th width="100px">Waktu</th>
-                        <th width="100px">email</th>
-                        <th width="100px">Status</th>
+                        <th>ID Pesanan</th>
+                        <th>Status</th>
                         <th>Resi</th>
-                        <th width="200px">Aksi</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Pesanan</th>
-                        <th>Total</th>
-                        <th>Waktu</th>
-                        <th>email</th>
+                        <th>ID Pesanan</th>
                         <th>Status</th>
                         <th>Resi</th>
                         <th>Aksi</th>
@@ -110,17 +69,11 @@
                     <?php $no=1;  foreach($data as $key) :?>
                     <tr>
                         <td><?= $no; ?></td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-id="<?= $key['id_order']; ?>">view</button>
-                        </td>
-                        <td><?= $key['total']; ?></td>
-                        <td><?= $key['waktu']; ?></td>
-                        <td><?= $key['email']; ?></td>
+                        <td><?= $key['id_order']; ?></td>
                         <td><?= $key['status']; ?></td>
                         <td><?= $key['resi']; ?></td>
                         <td>
                             <button type="button" class="btn btn-sm btn-secondary shadow-none me-1" data-bs-toggle="modal" data-bs-target="#Edit" data-bs-id="<?= $key['id_order']; ?>" data-bs-resi="<?= $key['resi']; ?>"><i class="fa-solid fa-pen-to-square me-1"></i>Edit</button>
-                            <a href="" class="btn btn-sm btn-danger shadow-none"><i class="fa-solid fa-xmark me-2"></i>Cancel</a>
                         </td>
                     </tr>
                     <?php
@@ -133,30 +86,18 @@
 </div>
 
 <script>
-    const modal = document.getElementById('exampleModal')
     const Editmodal = document.getElementById('Edit')
-    modal.addEventListener('show.bs.modal', event => {
+   
+
+    Editmodal.addEventListener('show.bs.modal', event => {
         // Button that triggered the modal
         const button = event.relatedTarget
         // Extract info from data-bs-* attributes
         const id = button.getAttribute('data-bs-id')
         const resi = button.getAttribute('data-bs-resi')
         console.log(id);
-        $.ajax({
-        url: 'http://localhost:8080/AdminController/Data_detailOrder/'+id,
-        type: 'POST',
-        success: function(e){
-            $('#table_body').html(e)
-        }
-        })
-    })
-
-    Editmodal.addEventListener('show.bs.modal', event => {
-        // Button that triggered the modal
-        const button = event.relatedTarget
-        // Extract info from data-bs-* attributes
-        const resi = button.getAttribute('data-bs-resi')
         $('input[name=noresi]').val(resi)
+        $('input[name=id_order]').val(id)
         
     })
 </script>

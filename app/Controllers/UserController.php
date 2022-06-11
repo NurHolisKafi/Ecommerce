@@ -18,7 +18,7 @@ class UserController extends BaseController
         // $jumlah = $this->request->getPost('jumlah');
         
         // $a = array();
-        dd(\Midtrans\Transaction::status('1973127621'));
+        echo \Midtrans\Transaction::cancel('395756181');
     }
 
 
@@ -181,6 +181,12 @@ class UserController extends BaseController
     public function Delete_keranjang(){
         $id = $this->request->getGet('id');
         $this->model->delete_keranjang($id);
+        return redirect()->back();
+    }
+
+    public function Delete_order($id_order){
+        $hasil = \Midtrans\Transaction::cancel($id_order);
+        $this->model->update_order($id_order,5);
         return redirect()->back();
     }
 

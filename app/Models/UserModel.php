@@ -77,7 +77,7 @@ class UserModel extends Model
 
     public function view_order($id){
         $table = $this->db->table('orders');
-        $table->select('id_order,total,waktu,metode_pembayaran,resi,status_pengiriman.nama as status');
+        $table->select('id_order,total,waktu,metode_pembayaran,resi,status_pengiriman.nama as status,status_pengiriman.id_status as id_status');
         $table->join('status_pengiriman','status_pengiriman.id_status = orders.id_status');
         $table->where('id_users',$id);
         $table->groupBy("waktu");
@@ -143,6 +143,19 @@ class UserModel extends Model
         $table->set($data);
         return $table->insert();
     }
+
+    //UPDATE
+    public function update_order($id,$id_status){
+        $table = $this->db->table('orders');
+        $data = [
+            'id_status' => $id_status
+        ];
+        $table->set($data);
+        $table->where('id_order',$id);
+        $query = $table->update();
+        return $query;
+    }
+
 
     //DELETE
     public function delete_keranjang($id){

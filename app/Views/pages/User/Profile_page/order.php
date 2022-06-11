@@ -14,6 +14,7 @@
       </div>
       <div class="modal-body">
         <div class="container">
+          <p id="id_pesan"></p>
           <div class="row justify-content-center">
             <div class="col-10">
               <table class="table table-hover table-bordered">
@@ -36,6 +37,24 @@
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
+</div>
+<!-- Modal Hapus -->
+<div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          Yakin ingin membatalkan pesanan?
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">Cancel</button>
+          <a href="" class="btn btn-primary shadow-none" id="btn_hapus">Yes</a>
+      </div>
+      </div>
   </div>
 </div>
 
@@ -67,9 +86,15 @@
                         <td><?= $key['waktu']; ?></td>
                         <td><?= $key['status']; ?></td>
                         <td><?= $key['resi']; ?></td>
-                        <td><a href="" class="btn btn-sm btn-dark">Cancel</a></td>
+                        <td>
+                          <?php if($key['id_status'] == 5 || $key['id_status'] == 6): ?>
+                            <button type="button" class="btn btn-sm btn-dark" disabled>Cancel</button>
+                          <?php else : ?>
+                            <button type="button" class="btn btn-sm btn-dark shadow-none" data-bs-toggle="modal" data-bs-target="#delete" data-bs-id="<?= $key['id_order']; ?>">Cancel</button>
+                          <?php endif; ?>
+                        </td>
                       </tr>
-                      <?php $no++; endforeach;  ?>
+                      <?php $no++; endforeach;?>
                     </tbody>
                   </table>
             </div>
@@ -90,9 +115,21 @@
       url: 'http://localhost:8080/UserController/Data_detailOrder/'+id,
       type: 'POST',
       success: function(e){
+        $('#id_pesan').html('ID PESANAN : '+id)
         $('#table_body').html(e)
       }
     })
+  })
+
+
+  //modal delete
+  var hapus = document.getElementById('delete')
+  hapus.addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget
+    var id = button.getAttribute('data-bs-id');
+    link = document.querySelector('.modal-footer #btn_hapus');
+    link.href = '/UserController/Delete_order/' + id;
+
   })
 </script>
 
