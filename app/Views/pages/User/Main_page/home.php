@@ -145,14 +145,14 @@
     <!-- Produk -->
   <div class="container" style="margin-top: 100px;">
     <div class="row title mb-3">
-      <div class="col-8">
+      <div class="col-8 mb-3">
         <h4 class="section-title">all product</h4>
         <div class="garis-biru"></div>
       </div>
       <div class="col-3">
         <div class="form-group d-flex align-items-center">
           <h6 class="me-3">Kategori</h6>
-          <select class="form-select form-select-sm shadow-none" aria-label="Default select example" name="category">
+          <select class="form-select form-select-sm shadow-none" aria-label="Default select example" name="category" id="category">
           <option selected="selected" value="0">All Product</option>
           <?php foreach($category as $key): ?>
             <option value="<?=$key['id_category']?>"><?=$key['nama']?></option>
@@ -161,8 +161,9 @@
         </div>
       </div>
     </div>
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <?php foreach($featured_produk as $key): ?>
+    
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="all_produk">
+      <?php foreach($all_produk as $key): ?>
       <div class="col mb-5">
         <div class="card" id="card-produk">
           <img src="/assets/img/<?=$key['gambar'];?>" class="card-img-top" alt="..." height="210x">
@@ -175,7 +176,7 @@
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star-half-stroke"></i>
             </div>
-            <p class="card-text mt-2">Rp. <?=$key['harga'];?></p>
+            <p class="card-text mt-2" id="view-harga"><?=$key['harga'];?></p>
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
               <div class="text-center"><a class="btn btn-outline-primary mt-auto d-grid" href="/detail?id=<?=$key['id_produk'];?>">Beli</a></div>
             </div>
@@ -186,4 +187,35 @@
     </div>
   </div>
 
+
+<script>
+
+function view(harga){
+  let a = String(harga).split("").reverse();
+  for (let b = 0; b < a.length; b++) {
+      if ((b + 1) % 3 == 0 && b != a.length - 1) {
+          a[b] = `.${a[b]}`;
+      }
+  }
+  hasil = a.reverse().join("");
+  
+  return `Rp ${hasil}`
+}
+
+  $('#category').on('change',function() {
+    console.log($("#category option:selected").text());
+    $.ajax({
+      url: '/UserController/Data_ProdukByCategory',
+      type: 'POST',
+      data:{
+        id: $(this).val()
+      },
+      success: function(e){
+        $('#all_produk').html(e)
+        title = $("#category option:selected").text()
+        $('h4').html(title.toUpperCase())
+      }
+    })
+  })
+</script>
 <?= $this->endSection() ?>

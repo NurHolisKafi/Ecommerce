@@ -14,8 +14,8 @@
       <a class="navbar-brand mx-lg-5" href="/">ArBeauty Store</a>
 
       <!-- searching -->
-      <form class="input-group d-md-flex d-none me-md-auto search-navbar" method="POST" action="#">
-        <input class="form-control input-search" type="search" placeholder="Search" aria-label="Search" aria-describedby="search">
+      <form class="input-group d-md-flex d-none me-md-auto search-navbar" method="POST" action="/search">
+        <input class="form-control input-search" type="search" name="nama" placeholder="Search" aria-label="Search" aria-describedby="search">
         <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
 
@@ -77,8 +77,8 @@
     </div>
   </nav>
 
-  <form class="input-group search-navbar position-absolute search-hidden hidden d-md-none" method="POST" action="#">
-    <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="" aria-describedby="search">
+  <form class="input-group search-navbar position-fixed search-hidden hidden d-md-none mt-5" method="POST" action="/search">
+    <input class="form-control" type="search" name="nama" placeholder="Search" aria-label="Search" style="" aria-describedby="search">
     <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
   </form>
 

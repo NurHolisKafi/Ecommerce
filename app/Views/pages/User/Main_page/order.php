@@ -165,16 +165,16 @@ $('.fw-bold').on('click',function(){
 })
 
 function view(harga){
-    let a = String(harga).split("").reverse();
-    for (let b = 0; b < a.length; b++) {
-        if ((b + 1) % 3 == 0 && b != a.length - 1) {
-            a[b] = `.${a[b]}`;
-        }
-    }
-    hasil = a.reverse().join("");
-
-    return `Rp ${hasil}`
+  let a = String(harga).split("").reverse();
+  for (let b = 0; b < a.length; b++) {
+      if ((b + 1) % 3 == 0 && b != a.length - 1) {
+          a[b] = `.${a[b]}`;
+      }
   }
+  hasil = a.reverse().join("");
+  
+  return `Rp ${hasil}`
+}
 
 
 $('#hidden').hide();

@@ -35,6 +35,7 @@ $routes->get('/', 'UserController::index');
 $routes->get('/detail/', 'UserController::Single_produk');
 $routes->get('/keranjang/', 'UserController::Keranjang');
 $routes->post('/checkout/', 'UserController::Checkout');
+$routes->post('/search/', 'UserController::Search');
 $routes->get('/login/','AuthController::login/2');
 $routes->get('/register/','UserController::Register');
 $routes->get('/myorder/','UserController::Order_list');

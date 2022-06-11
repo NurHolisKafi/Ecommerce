@@ -18,7 +18,8 @@ class UserController extends BaseController
         // $jumlah = $this->request->getPost('jumlah');
         
         // $a = array();
-        echo \Midtrans\Transaction::cancel('395756181');
+        // echo \Midtrans\Transaction::cancel('395756181');
+        dd($this->model->view_produkByName('j'));
     }
 
 
@@ -114,6 +115,13 @@ class UserController extends BaseController
         }
     }
     
+    public function Search(){
+        $nama = $this->request->getPost('nama');
+        $result = [
+            'all_produk' => $this->model->view_produkByName($nama)
+        ];
+        return view('Pages/User/search',$result);
+    }
     
 
     // VIEW AKUN PAGE
@@ -126,7 +134,6 @@ class UserController extends BaseController
     }
 
     public function Order_list(){
-        // dd();
         $data =[
             'order' => $this->model->view_order($this->session->get('data')['id_user']),
         ];
@@ -253,5 +260,35 @@ class UserController extends BaseController
         ];
 
         return $this->respond($result);
+    }
+
+    public function Data_ProdukByCategory(){
+        $id = $this->request->getPost('id');
+        if ($id !=0) {
+            $hasil = $this->model->view_produkByCategory($id);
+        } else {
+            $hasil = $this->model->view_featuredproduk();
+        }
+        foreach($hasil as $key){
+            echo "<div class='col-2 mb-5'>
+                    <div class='card' id='card-produk'>
+                    <img src='/assets/img/".$key['gambar']."' class='card-img-top' height='210x'>
+                    <div class='card-body text-center'>
+                        <h6 class='card-title'>".$key['nama']."</h6>
+                        <div class='icon-bintang' style='color: orange;'>
+                        <i class='fa-solid fa-star'></i>
+                        <i class='fa-solid fa-star'></i>
+                        <i class='fa-solid fa-star'></i>
+                        <i class='fa-solid fa-star'></i>
+                        <i class='fa-solid fa-star-half-stroke'></i>
+                        </div>
+                        <p class='card-text mt-2'>Rp. ".$key['harga']."</p>
+                        <div class='card-footer p-4 pt-0 border-top-0 bg-transparent'>
+                        <div class='text-center'><a class='btn btn-outline-primary mt-auto d-grid' href='/detail?id=".$key['id_produk']."'>Beli</a></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>'";
+        }
     }
 }

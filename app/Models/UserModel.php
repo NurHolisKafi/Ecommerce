@@ -18,11 +18,30 @@ class UserModel extends Model
         return $query;
     }
 
+    public function view_produkByName($nama){
+        $table = $this->db->table('produk');
+        $table->select('produk.id_produk,produk.nama as nama,harga,gambar.nama as gambar');
+        $table->join('gambar', 'gambar.id_produk = produk.id_produk');
+        $table->groupBy("produk.id_produk");
+        $table->like('produk.nama',$nama);
+        $query = $table->get()->getResultArray();
+        return $query;
+    }
+
     public function view_produkById($id){
         $table = $this->db->table('produk');
         $table->select('produk.id_produk,produk.nama as nama,harga,berat');
         $table->where('id_produk',$id);
         return $table->get()->getRowArray();
+    }
+
+    public function view_produkByCategory($id){
+        $table = $this->db->table('produk');
+        $table->select('produk.id_produk,produk.nama as nama,harga,gambar.nama as gambar');
+        $table->join('gambar', 'gambar.id_produk = produk.id_produk');
+        $table->groupBy("produk.id_produk");
+        $table->where('id_category',$id);
+        return $table->get()->getResultArray();
     }
 
     public function view_category(){
