@@ -55,4 +55,25 @@ class AdminModel extends Model
         $query = $table->update();
         return $query;
     }
+
+    //DATA
+    public function get_JumUser(){
+        $table = $this->db->table('users');
+        $table->selectCount('id_user');
+        return $table->get()->getRowArray();
+    }
+
+    public function get_JumProduk(){
+        $table = $this->db->table('produk');
+        $table->selectCount('id_produk');
+        return $table->get()->getRowArray();
+    }
+
+    public function get_JumOrder(){
+        $table = $this->db->table('orders');
+        $table->selectCount('id_status');
+        $table->where('id_status <','4');
+        return $table->get()->getRowArray();
+    }
+    
 }

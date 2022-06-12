@@ -47,7 +47,7 @@
         <span class="ms-2"><?= $_SESSION['data']['nama']; ?></span>
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a href="#" class="dropdown-item">My Profile</a></li>
+          <li><a href="/myprofile" class="dropdown-item">My Profile</a></li>
           <li><a href="/AuthController/logout" class="dropdown-item">Logout</a></li>
         </ul>
       </div>
@@ -60,8 +60,8 @@
           <!-- <span class="ms-2">Nur Holis Kafi</span> -->
         </button>
         <ul class="dropdown-menu">
-          <li><a href="" class="dropdown-item">Profile</a></li>
-          <li><a href="" class="dropdown-item">Logout</a></li>
+          <li><a href="/myprofile" class="dropdown-item">Profile</a></li>
+          <li><a href="/AuthController/logout" class="dropdown-item">Logout</a></li>
         </ul>
       </div>
       <?php else : ?>

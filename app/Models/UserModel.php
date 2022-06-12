@@ -8,6 +8,11 @@ class UserModel extends Model
 {
 
     //VIEW
+    public function view_user($id){
+        $table = $this->db->table('users');
+        $table->where('id_user',$id);
+        return $table->get()->getRowArray();
+    }
 
     public function view_produk(){
         $table = $this->db->table('produk');
@@ -99,13 +104,13 @@ class UserModel extends Model
         $table->select('id_order,total,waktu,metode_pembayaran,resi,status_pengiriman.nama as status,status_pengiriman.id_status as id_status');
         $table->join('status_pengiriman','status_pengiriman.id_status = orders.id_status');
         $table->where('id_users',$id);
-        $table->groupBy("waktu");
+        $table->orderBy("waktu",'DESC');
         return $table->get()->getResultArray();
     }
 
     public function view_detailOrder($id){
         $table = $this->db->table('detail_order');
-        $table->select('produk.nama,jumlah');
+        $table->select('produk.nama as produk,jumlah,produk.harga as harga');
         $table->join('produk','detail_order.id_produk = produk.id_produk');
         $table->where('id_order',$id);
         return $table->get()->getResultArray();
@@ -119,6 +124,22 @@ class UserModel extends Model
             'email' => $email,
             'notelp' => $notelp,
             'password' => $pass
+        ];
+        $table->set($data);
+        $query = $table->insert();
+        return $query;
+    }
+
+    public function add_invoice($id,$nama,$alamat,$city,$postal_code,$pengiriman){
+        $table = $this->db->table('invoice');
+        $data = [
+            'id_order' => $id,
+            'nama' => $nama,
+            'alamat' => $alamat,
+            'city' => $city,
+            'postal_code' => $postal_code,
+            'pengiriman' => $pengiriman,
+            'no_invoice' => rand()
         ];
         $table->set($data);
         $query = $table->insert();
@@ -175,6 +196,35 @@ class UserModel extends Model
         return $query;
     }
 
+    public function update_profile($id,$nama,$email,$notelp,$alamat,$gambar){
+        $table = $this->db->table('users');
+        $data = [
+            'nama' => $nama,
+            'email' => $email,
+            'notelp' => $notelp,
+            'alamat' => $alamat,
+        ];
+
+        if($gambar != ''){
+            $data['gambar'] = $gambar;
+        }
+        $table->set($data);
+        $table->where('id_user',$id);
+        $query = $table->update();
+        return $query;
+    }
+
+    public function update_pass($id,$currpass,$newpass){
+        $table = $this->db->table('users');
+        $data = [
+            'password' => $newpass
+        ];
+        $table->set($data);
+        $table->where('id_user',$id);
+        $table->where('password',$currpass);
+        $query = $table->update();
+        return $query;
+    }
 
     //DELETE
     public function delete_keranjang($id){
@@ -235,11 +285,16 @@ class UserModel extends Model
     }
 
     public function get_keranjang($id){
-        $table = $table = $this->db->table('keranjang');
+        $table =  $this->db->table('keranjang');
         $table->selectCount('id_produk');
         $table->where('id_user',$id);
         return $table->get()->getRowArray();
     }
 
-    
+    public function get_invoice($id){
+        $table = $table = $this->db->table('invoice');
+        $table->select('nama,alamat,city,postal_code,pengiriman,no_invoice');
+        $table->where('id_order',$id);
+        return $table->get()->getRowArray();
+    }
 }

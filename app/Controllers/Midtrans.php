@@ -73,7 +73,10 @@ class Midtrans extends BaseController
         
         $id_produk = $this->request->getPost('id');
         $jumlah =  $this->request->getPost('jumlah');
+        $data_pesanan = json_decode($this->request->getPost('data_pesanan'),true);
+        // dd($data_pesanan);
         $respond_pembayaran = json_decode($this->request->getPost('data'),true);
+        // dd($data_pesanan);
         if ($respond_pembayaran['transaction_status'] == 'pending') {
             $status = 1;
         }else if($respond_pembayaran['transaction_status'] == 'settlemant'){
@@ -87,6 +90,9 @@ class Midtrans extends BaseController
         }else {
             $this->model->add_order($respond_pembayaran['order_id'],$this->session->get('data')['id_user'],$respond_pembayaran['gross_amount'],$respond_pembayaran['transaction_time'],$respond_pembayaran['payment_type'],$status);
         }
+
+        $this->model->add_invoice($respond_pembayaran['order_id'],$data_pesanan[0]['value'],$data_pesanan[5]['value'],$data_pesanan[8]['value'],$data_pesanan[7]['value'],$data_pesanan[9]['value']);
+
         return redirect()->to('/myorder');
     }
 }

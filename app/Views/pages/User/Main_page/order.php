@@ -68,8 +68,6 @@ th{
                     </div>
                     <input type="hidden" name="postal_code">
                     <input type="hidden" name="city">
-                    <input type="hidden" name="subtotal_keseluruhan">
-                    <input type="hidden" name="subtotal_produk">
                     <input type="hidden" name="subtotal_pengiriman">
             </div>
             <div class="col-md-5 mt-3 mb-5">
@@ -132,6 +130,7 @@ th{
     <input type="hidden" name="jumlah[]" value="<?= $key['jumlah']; ?>">
   <?php endforeach; ?>
   <input type="hidden" name="data">
+  <input type="hidden" name="data_pesanan">
 </form>
 
 <!-- Modal -->
@@ -242,6 +241,13 @@ $('select[name=kurir]').on('change',function(){
 
 $('#form').on('submit',function(e) {
   e.preventDefault();
+  data = Array()
+  $.each($(this).serializeArray(), function (i, field) {
+      data.push(field);
+  });
+  
+  json = JSON.stringify(data);
+  $('input[name=data_pesanan').val(json);
   $.ajax({
     method: $(this).attr('method'),
     url: $(this).attr('action'),

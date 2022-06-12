@@ -73,6 +73,7 @@
                         <th>Waktu</th>
                         <th>Status</th>
                         <th>No Resi</th>
+                        <th>invoice</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
@@ -87,7 +88,10 @@
                         <td><?= $key['status']; ?></td>
                         <td><?= $key['resi']; ?></td>
                         <td>
-                          <?php if($key['id_status'] == 5 || $key['id_status'] == 6): ?>
+                          <a href="/invoice?id=<?= $key['id_order']; ?>" rel="noopener" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-print me-1"></i>Print</a>
+                        </td>
+                        <td>
+                          <?php if($key['id_status'] > 3): ?>
                             <button type="button" class="btn btn-sm btn-dark" disabled>Cancel</button>
                           <?php else : ?>
                             <button type="button" class="btn btn-sm btn-dark shadow-none" data-bs-toggle="modal" data-bs-target="#delete" data-bs-id="<?= $key['id_order']; ?>">Cancel</button>
@@ -99,7 +103,7 @@
                   </table>
             </div>
         </div>
-        <a href="akun.html" class="btn btn-md btn-danger mt-3">Kembali</a>
+        <a href="/myprofile" class="btn btn-md btn-danger mt-3">Kembali</a>
     </div>
 </div>
 

@@ -22,17 +22,14 @@ class AdminController extends BaseController
 
     }
 
-    public function test(){
-        // $data = [
-        //     'category' => $this->model->data_category(1)
-        // ];
-        // return $this->respond($data,200);
-        dd($this->model->view_order());
-    }
-
     //View
     public function index(){
-        echo view('pages/Admin/dashboard');
+        $data = [
+            'produk' => $this->model->get_JumProduk(),
+            'order' => $this->model->get_JumOrder(),
+            'user' => $this->model->get_JumUser(),
+        ];
+        return view('pages/Admin/dashboard',$data);
     }
 
     public function login(){

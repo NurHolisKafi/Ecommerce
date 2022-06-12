@@ -18,11 +18,12 @@ class UserController extends BaseController
         // $jumlah = $this->request->getPost('jumlah');
         
         // $a = array();
-        // echo \Midtrans\Transaction::cancel('395756181');
-        dd($this->model->view_produkByName('j'));
+        dd(\Midtrans\Transaction::status('395756181'));
+        
     }
 
 
+    
 
     //VIEW HOME PAGE
     public function index(){
@@ -126,7 +127,11 @@ class UserController extends BaseController
 
     // VIEW AKUN PAGE
     public function Profile(){
-        return view('Pages/User/Profile_page/home');
+        $data = [
+            'session' => $this->session,
+            'user' => $this->model->view_user($this->session->get('data')['id_user'])
+        ];
+        return view('Pages/User/Profile_page/home',$data);
     }
 
     public function History(){
@@ -141,13 +146,33 @@ class UserController extends BaseController
     }
 
     public function Edit_profile(){
-        return view('Pages/User/Profile_page/form_profile');
+        $data = [
+            'validate' => $this->validation,
+            'session' => $this->session,
+            'user' => $this->model->view_user($this->session->get('data')['id_user'])
+        ];
+        return view('Pages/User/Profile_page/form_profile',$data);
     }
 
     public function Edit_pass(){
-        return view('Pages/User/Profile_page/change_pass');
+        $data = [
+            'session' => $this->session
+        ];
+        return view('Pages/User/Profile_page/change_pass',$data);
     }
 
+    public function Invoice(){
+        $id = $this->request->getGet('id');
+        $status = \Midtrans\Transaction::status($id);
+        $data = [
+            'id' => $id,
+            'pemesan' => $this->model->get_invoice($id),
+            'produk' => $this->model->view_detailOrder($id),
+            'waktu' => $status->transaction_time,
+            'metode' => $status->payment_type,
+        ];
+        return view('pages/User/Profile_page/invoice',$data);
+    }
 
     //Insert
     public function Add_User(){
@@ -182,6 +207,45 @@ class UserController extends BaseController
         $id_user = $this->session->get('data')['id_user'];
         $hasil = $this->model->add_keranjang($id_produk,$total,$id_user);
         return redirect()->back()->with('success','Berhasil ditambahkan ke keranjang');
+    }
+
+    //UPDATE
+    public function Update_profile(){
+        if(!$this->validate([
+            'gambar' => [
+                'rules' => 'is_image[gambar]|max_size[gambar,5120]|mime_in[gambar,image/png,image/jpg,image/jpeg]',
+                'errors' => [
+                    'is_image' => 'File upload bukan gambar',
+                    'nime_in' => 'File upload bukan gambar',
+                    'max_size' => 'Ukuran gambar terlalu besar'
+                ]
+            ]
+        ])){
+            // dd($this->validation);
+            return redirect()->back()->withInput();
+        };
+        $id = $this->request->getpost('id');
+        $nama = $this->request->getpost('nama');
+        $alamat = $this->request->getpost('alamat');
+        $email = $this->request->getpost('email');
+        $notelp = $this->request->getpost('notelp');
+        $gambar = $this->request->getfile('gambar');
+        if ($gambar->getName() == '') {
+            $this->model->update_profile($id,$nama,$email,$notelp,$alamat,'');
+        }else {
+            $nama_gambar = $gambar->getName();
+            $gambar->move('assets/img2/profile',$nama_gambar);
+            $this->model->update_profile($id,$nama,$email,$notelp,$alamat,$nama_gambar);
+        }
+        return redirect()->to('/myprofile')->with('success','Data berhasil diperbarui');
+    }
+
+    public function Update_pass(){
+        $id = $this->request->getpost('id');
+        $currpass = $this->request->getpost('currpass');
+        $newpass = $this->request->getpost('newpass');
+        $this->model->update_pass($id,$currpass,$newpass);
+        return redirect()->to('/editprofile')->with('success','Password berhasil diubah');
     }
 
     //DELETE
