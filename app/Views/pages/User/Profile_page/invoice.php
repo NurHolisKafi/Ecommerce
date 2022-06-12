@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <!-- Custom Style -->
     <link rel="stylesheet" href="/assets/invoice/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
 
     <title>Invoice..!</title>
 </head>
@@ -73,18 +75,20 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach($produk as $key): ?>
                         <tr>
                             <td>
                                 <div class="media">
                                     <div class="media-body">
-                                        <p class="mt-0 title">Media heading</p>
+                                        <p class="mt-0 title"><?=strtoupper($key['nama']); ?></p>
                                     </div>
                                 </div>
                             </td>
-                            <td>200$</td>
-                            <td>1</td>
+                            <td><?= $key['harga']; ?></td>
+                            <td id="jumlah"><?= $key['jumlah']; ?></td>
                             <td>200$</td>
                         </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </section>
@@ -125,29 +129,21 @@
             <!-- Cart BG -->
             <img src="/assets/invoice/cart.jpg" class="img-fluid cart-bg" alt="">
 
-            <footer>
+            <footer style="margin-left: 50px;">
                 <hr class="mb-3">
                
-                <div class="social pt-3">
+                <div class="social">
                     <span class="pr-2">
                         <i class="fas fa-mobile-alt"></i>
-                        <span>0123456789</span>
+                        <span>+62 812-3023-9307</span>
                     </span>
                     <span class="pr-2">
                         <i class="fas fa-envelope"></i>
-                        <span>me@saburali.com</span>
+                        <span>dianprayodha@yahoo.com</span>
                     </span>
                     <span class="pr-2">
-                        <i class="fab fa-facebook-f"></i>
-                        <span>/sabur.7264</span>
-                    </span>
-                    <span class="pr-2">
-                        <i class="fab fa-youtube"></i>
-                        <span>/abdussabur</span>
-                    </span>
-                    <span class="pr-2">
-                        <i class="fab fa-github"></i>
-                        <span>/example</span>
+                        <i class="fab fa-instagram"></i>
+                        <span>@dianprayodha</span>
                     </span>
                 </div>
             </footer>
@@ -156,9 +152,23 @@
 
 
 
-    <!-- <script>
+    <script>
         window.addEventListener("load", window.print());
-    </script> -->
+        jumlah = document.querySelectorAll('#jumlah');
+        let pengiriman = <?= $pemesan['pengiriman'];?>;
+        let subtotal_produk = 0;
+        jumlah.forEach(e => {
+            harga = e.previousElementSibling.innerHTML
+            total = e.innerHTML * harga
+            e.previousElementSibling.innerHTML = harga + '.00'
+            e.nextElementSibling.innerHTML = total + '.00'
+            subtotal_produk += total
+        });
+        $('#total_produk').html(subtotal_produk+'.00')
+        total_keseluruhan = subtotal_produk + pengiriman
+        $('#total_pembayaran').html(total_keseluruhan+'.00')
+        
+    </script>
 
 
 

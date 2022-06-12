@@ -110,7 +110,7 @@ class UserModel extends Model
 
     public function view_detailOrder($id){
         $table = $this->db->table('detail_order');
-        $table->select('produk.nama as produk,jumlah,produk.harga as harga');
+        $table->select('produk.nama,jumlah,produk.harga');
         $table->join('produk','detail_order.id_produk = produk.id_produk');
         $table->where('id_order',$id);
         return $table->get()->getResultArray();
