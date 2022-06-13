@@ -14,15 +14,21 @@
                 <h3>Login</h3>
                 <!-- <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p> -->
               </div>
+              <?php if($session->getFlashdata('gagal')): ?>
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <?= $session->getFlashdata('gagal'); ?>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <?php endif; ?>
               <form action="/AuthController/Auth" method="post">
                 <input type="hidden" name="id" value="<?= $id; ?>">
                 <div class="form-group first mb-3">
                   <label for="username">Username</label>
-                  <input type="text" class="form-control mt-2" placeholder="John doe" name="username" id="username">
+                  <input type="text" class="form-control mt-2" placeholder="John doe" name="username" id="username" required>
                 </div>
                 <div class="form-group last mb-5">
                   <label for="password">Password</label>
-                  <input type="password" class="form-control mt-2" placeholder="********" name="pass" id="password">
+                  <input type="password" class="form-control mt-2" placeholder="********" name="pass" id="password" required>
                 </div>
                 <button class="btn btn-block btn-primary w-100 mb-4"> LOG IN</button>
 				        <p>Don't Have a Account ? <a href="/register">SIGN IN</a></p>

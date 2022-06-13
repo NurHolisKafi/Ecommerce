@@ -53,7 +53,7 @@ class AuthController extends BaseController
                 $this->session->set($data);
                 return redirect()->to('/');
             }else{
-                return redirect()->back()->with('gagal','A problem has been occurred while submitting your data.');
+                return redirect()->back()->with('gagal','Nama atau Password Salah');
             }
         }
 

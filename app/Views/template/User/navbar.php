@@ -2,7 +2,9 @@
   $data = new App\Models\UserModel;
 
   if(isset($_SESSION['status'])){
-    $jum_keranjang = $data->get_keranjang($_SESSION['data']['id_user'])['id_produk'];
+    if ($_SESSION['status'] == 'user') {
+      $jum_keranjang = $data->get_keranjang($_SESSION['data']['id_user'])['id_produk'];
+    }
   }else{
     $jum_keranjang = 0;
   }
@@ -39,31 +41,33 @@
       </div>
 
       <?php if(isset($_SESSION['status'])) : ?>
-      <!-- akun sudah login -->
-      <div class="btn-group me-lg-auto dropdown">
-        <button class=" btn btn-outline-dark dropdown-toggle" id="dropdownMenuButton1" type="button" data-bs-toggle="dropdown"
-        aria-expanded="false">
-        <i class="fa-solid fa-user"></i>
-        <span class="ms-2"><?= $_SESSION['data']['nama']; ?></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a href="/myprofile" class="dropdown-item">My Profile</a></li>
-          <li><a href="/AuthController/logout" class="dropdown-item">Logout</a></li>
-        </ul>
-      </div>
-
-      <!-- icon akun -->
-      <div class="btn-group d-sm-none me-2 d-none" id="icon-profile">
-        <button class="btn bg-white dropdown-toggle border-0 shadow-none" type="button" data-bs-toggle="dropdown"
+        <?php if($_SESSION['status'] == 'user'): ?>
+        <!-- akun sudah login -->
+        <div class="btn-group me-lg-auto dropdown">
+          <button class=" btn btn-outline-dark dropdown-toggle" id="dropdownMenuButton1" type="button" data-bs-toggle="dropdown"
           aria-expanded="false">
           <i class="fa-solid fa-user"></i>
-          <!-- <span class="ms-2">Nur Holis Kafi</span> -->
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="/myprofile" class="dropdown-item">Profile</a></li>
-          <li><a href="/AuthController/logout" class="dropdown-item">Logout</a></li>
-        </ul>
-      </div>
+          <span class="ms-2"><?= $_SESSION['data']['nama']; ?></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a href="/myprofile" class="dropdown-item">My Profile</a></li>
+            <li><a href="/AuthController/logout" class="dropdown-item">Logout</a></li>
+          </ul>
+        </div>
+
+        <!-- icon akun -->
+        <div class="btn-group d-sm-none me-2 d-none" id="icon-profile">
+          <button class="btn bg-white dropdown-toggle border-0 shadow-none" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fa-solid fa-user"></i>
+            <!-- <span class="ms-2">Nur Holis Kafi</span> -->
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="/myprofile" class="dropdown-item">Profile</a></li>
+            <li><a href="/AuthController/logout" class="dropdown-item">Logout</a></li>
+          </ul>
+        </div>
+        <?php endif; ?>
       <?php else : ?>
         <!-- akun belum login -->
         <div class="me-lg-auto me-2 ms-md-3 me-sm-0">

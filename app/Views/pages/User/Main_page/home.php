@@ -55,7 +55,7 @@
             <div class="media-body">
               <h5>Fast Shipping</h5>
               <p class="text-muted">
-                All you have to do is to bring your passion. We take care of the rest.
+                Pengiriman cepat tanpa menunggu lama
               </p>
             </div>
           </div>
@@ -68,7 +68,7 @@
             <div class="media-body">
               <h5>Online Payment</h5>
               <p class="text-muted">
-                All you have to do is to bring your passion. We take care of the rest.
+                Pembayaran dapat dilakukan dengan berbagai metode
               </p>
             </div>
           </div>
@@ -81,7 +81,7 @@
             <div class="media-body">
               <h5>Free Return</h5>
               <p class="text-muted">
-                All you have to do is to bring your passion. We take care of the rest.
+                Barang yang tidak sesuai dapat dikembalikan 
               </p>
             </div>
           </div>
@@ -132,11 +132,8 @@
         </div>
         <div class="col-md-5 text-md-start text-center">
           <p style="font-weight: 500;">Exclusive available in ARBeauty Store</p>
-          <h1>MSSLIM</h1>
-          <small>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione eius repellat qui amet nesciunt, quae
-            expedita cumque nostrum sed, nihil cum. Dolorem deserunt praesentium rem dicta? A unde tempore officia
-            natus. Laudantium, dolores repellendus. Eum, porro, quidem ipsum ex rem assumenda impedit officiis
-            consequuntur cum nemo accusamus asperiores et delectus.</small>
+          <h1>MSSLIM LIMITED EDITION</h1>
+          <small>Limited Edition edisi valentine, stock sangat terbatas hanya selama persediaan masih ada siapa cepat dia dapat</small>
         </div>
       </div>
     </div>

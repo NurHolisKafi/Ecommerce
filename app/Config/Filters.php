@@ -8,7 +8,8 @@ use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
-
+use App\Filters\FilterAdmin;
+use App\Filters\FilterUser;
 class Filters extends BaseConfig
 {
     /**
@@ -23,6 +24,8 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        'auth_admin'    =>FilterAdmin::class,
+        'auth_user'     =>FilterUser::class,
     ];
 
     /**
@@ -64,5 +67,8 @@ class Filters extends BaseConfig
      *
      * @var array
      */
-    public $filters = [];
+    public $filters = [
+        'auth_admin' => ['before' => ['/a/','/a/category/','/a/produk/','/a/produk/gambar/','/a/account/','/a/order/','AdminController/*','ProdukController/*','CategoryController/*']],
+        'auth_user' => ['before' => ['/keranjang','/checkout','/myprofile','/myorder','/editprofile','/editpass','UserController/*']],
+    ];
 }

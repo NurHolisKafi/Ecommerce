@@ -18,7 +18,7 @@ class UserController extends BaseController
         // $jumlah = $this->request->getPost('jumlah');
         
         // $a = array();
-        dd(\Midtrans\Transaction::status('395756181'));
+        // dd(\Midtrans\Transaction::status('395756181'));
         
     }
 
@@ -36,7 +36,7 @@ class UserController extends BaseController
     }
     
     public function Login(){
-        return view('Pages/User/Main_page/login');
+        return view('Pages/User/Main_page/login',['session'=>$this->session]);
     }
     
     public function Register(){
@@ -48,7 +48,8 @@ class UserController extends BaseController
         $id = $this->request->getGet('id');
         $result = [
             'img' => $this->model->view_img($id),
-            'detail' => $this->model->detail_produk($id)
+            'detail' => $this->model->detail_produk($id),
+            'featured_produk' => $this->model->view_featuredproduk(),
         ];
         return view('Pages/User/Main_page/single_produk',$result);
     }
@@ -225,6 +226,10 @@ class UserController extends BaseController
             return redirect()->back()->withInput();
         };
         $id = $this->request->getpost('id');
+        $file_gambar = $this->model->view_user($id)['gambar'];
+        if ($file_gambar != 'user.png') {
+            unlink('assets/img2/profile/' .$file_gambar);
+        }
         $nama = $this->request->getpost('nama');
         $alamat = $this->request->getpost('alamat');
         $email = $this->request->getpost('email');
@@ -237,6 +242,7 @@ class UserController extends BaseController
             $gambar->move('assets/img2/profile',$nama_gambar);
             $this->model->update_profile($id,$nama,$email,$notelp,$alamat,$nama_gambar);
         }
+
         return redirect()->to('/myprofile')->with('success','Data berhasil diperbarui');
     }
 
