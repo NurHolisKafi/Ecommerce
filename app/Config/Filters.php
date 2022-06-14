@@ -69,6 +69,6 @@ class Filters extends BaseConfig
      */
     public $filters = [
         'auth_admin' => ['before' => ['/a/','/a/category/','/a/produk/','/a/produk/gambar/','/a/account/','/a/order/','AdminController/*','ProdukController/*','CategoryController/*']],
-        'auth_user' => ['before' => ['/keranjang','/checkout','/myprofile','/myorder','/editprofile','/editpass','UserController/*']],
+        'auth_user' => ['before' => ['/keranjang','/checkout','/myprofile','/myorder','/editprofile','/editpass']],
     ];
 }
