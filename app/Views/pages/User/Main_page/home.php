@@ -182,10 +182,46 @@
       </div>
       <?php endforeach; ?>
     </div>
+    <div class="border d-flex justify-content-center">
+      <div id="load-more" class="btn btn-outline-success shadow-none rounded-0 my-3">LOAD MORE</div>
+    </div>
   </div>
 
 
 <script>
+ 
+  function load_more() {
+    all_produk = document.querySelectorAll('#all_produk .col');
+    all_produk.forEach((e,i) => {
+      if (i > 15) {
+        e.style.display = 'none';
+      }
+    }) 
+
+    let boxes = [...document.querySelectorAll('#all_produk .col')];
+    let loadMoreBtn = document.querySelector('#load-more');
+    let currentItem = 16;
+
+    if (currentItem >= boxes.length) {
+      loadMoreBtn.style.display = 'none';
+    }else {
+      loadMoreBtn.onclick = () => {
+        for (var i = currentItem; i < currentItem + 16; i++) {
+            if (i < boxes.length) {
+              boxes[i].style.display = 'inline-block';
+            }
+        }
+        currentItem += 16;
+        console.log(currentItem);
+
+        if (currentItem >= boxes.length) {
+            loadMoreBtn.style.display = 'none';
+        }
+      }
+    }
+  }
+
+load_more();
 
 function view(harga){
   let a = String(harga).split("").reverse();
@@ -200,7 +236,6 @@ function view(harga){
 }
 
   $('#category').on('change',function() {
-    console.log($("#category option:selected").text());
     $.ajax({
       url: '/UserController/Data_ProdukByCategory',
       type: 'POST',

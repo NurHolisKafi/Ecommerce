@@ -340,7 +340,7 @@ class UserController extends BaseController
             $hasil = $this->model->view_featuredproduk();
         }
         foreach($hasil as $key){
-            echo "<div class='col-2 mb-5'>
+            echo "<div class='col mb-5'>
                     <div class='card' id='card-produk'>
                     <img src='/assets/img/".$key['gambar']."' class='card-img-top' height='210x'>
                     <div class='card-body text-center'>
@@ -358,7 +358,7 @@ class UserController extends BaseController
                         </div>
                     </div>
                     </div>
-                </div>'";
+                </div>";
         }
     }
 }
