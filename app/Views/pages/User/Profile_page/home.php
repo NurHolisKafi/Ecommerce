@@ -11,8 +11,8 @@
     <div class="d-flex align-items-center">
         <img src="/assets/img2/profile/<?= $user['gambar']; ?>" class="img-thumbnail rounded-circle" alt="" width="100px">
         <div class="ms-3">
-            <p class="my-1" style="font-size: x-large; font-weight: bold;">Nur Holis Kafi</p>
-            <p>081912775</p>
+            <p class="my-1" style="font-size: x-large; font-weight: bold;"><?= $user['nama']; ?></p>
+            <p><?= $user['notelp']; ?></p>
         </div>
     </div>
     <div class="mt-5" id="menu">
