@@ -1,12 +1,10 @@
   <?php 
   $data = new App\Models\UserModel;
-
+  $jum_keranjang = 0;
   if(isset($_SESSION['status'])){
     if ($_SESSION['status'] == 'user') {
       $jum_keranjang = $data->get_keranjang($_SESSION['data']['id_user'])['id_produk'];
     }
-  }else{
-    $jum_keranjang = 0;
   }
    ?>
   
@@ -40,8 +38,7 @@
         <a href="/keranjang" class="text-dark"><i class="fa-solid fa-bag-shopping"></i></a>
       </div>
 
-      <?php if(isset($_SESSION['status'])) : ?>
-        <?php if($_SESSION['status'] == 'user'): ?>
+      <?php if(isset($_SESSION['status']) && $_SESSION['status'] == 'user') : ?>
         <!-- akun sudah login -->
         <div class="btn-group me-lg-auto dropdown">
           <button class=" btn btn-outline-dark dropdown-toggle" id="dropdownMenuButton1" type="button" data-bs-toggle="dropdown"
@@ -50,11 +47,10 @@
           <span class="ms-2"><?= $_SESSION['data']['nama']; ?></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a href="/myprofile" class="dropdown-item">My Profile</a></li>
             <li><a href="/AuthController/logout" class="dropdown-item">Logout</a></li>
+            <li><a href="/myprofile" class="dropdown-item">My Profile</a></li>
           </ul>
         </div>
-
         <!-- icon akun -->
         <div class="btn-group d-sm-none me-2 d-none" id="icon-profile">
           <button class="btn bg-white dropdown-toggle border-0 shadow-none" type="button" data-bs-toggle="dropdown"
@@ -67,7 +63,6 @@
             <li><a href="/AuthController/logout" class="dropdown-item">Logout</a></li>
           </ul>
         </div>
-        <?php endif; ?>
       <?php else : ?>
         <!-- akun belum login -->
         <div class="me-lg-auto me-2 ms-md-3 me-sm-0">
@@ -81,9 +76,9 @@
     </div>
   </nav>
 
-  <form class="input-group search-navbar position-fixed search-hidden hidden d-md-none mt-5" method="POST" action="/search">
-    <input class="form-control" type="search" name="nama" placeholder="Search" aria-label="Search" style="" aria-describedby="search">
-    <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+  <form style="width: 250px;" class="input-group search-navbar position-fixed search-hidden hidden d-md-none mt-5"  method="POST" action="/search">
+    <input class="form-control" type="search" name="nama" placeholder="Search" aria-label="Search" aria-describedby="search">
+    <button class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
   </form>
 
 

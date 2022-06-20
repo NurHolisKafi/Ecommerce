@@ -119,6 +119,10 @@ class UserController extends BaseController
     
     public function Search(){
         $nama = $this->request->getPost('nama');
+        if ($nama == "") {
+            $nama = 0;
+        }
+        // dd($nama);
         $result = [
             'all_produk' => $this->model->view_produkByName($nama)
         ];

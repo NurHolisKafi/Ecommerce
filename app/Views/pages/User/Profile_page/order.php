@@ -116,7 +116,7 @@
     const id = button.getAttribute('data-bs-id')
     console.log(id);
     $.ajax({
-      url: 'http://localhost:8080/UserController/Data_detailOrder/'+id,
+      url: '/UserController/Data_detailOrder/'+id,
       type: 'POST',
       success: function(e){
         $('#id_pesan').html('ID PESANAN : '+id)

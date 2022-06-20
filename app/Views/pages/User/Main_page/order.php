@@ -119,6 +119,9 @@ th{
                     <button type="submit" id="pay-button" class="btn btn-beli btn-lg btn-primary ms-lg-5 ms-md-3 ms-2 shadow-none" style="font-size: 14px;">Beli Sekarang</button>
                     </form>
                 </div>
+                <div class="alert alert-info rounded-0 my-5" role="alert">
+                  Catatan: jika harga pada peilihan metode pembayaran tidak sesuai seperti yang tertera maka close metodenya dan ulangi lagi.
+                </div>
             </div>
         </div>
     </div>
@@ -180,7 +183,7 @@ $('#hidden').hide();
 
 $('#provinsi').on('change',function(){
   $.ajax({
-    url: 'http://localhost:8080/UserController/DataCity',
+    url: '/UserController/DataCity',
     type: 'POST',
     data: {
       id: $(this).val()
@@ -200,7 +203,7 @@ $('select[name=kota]').on('change',function(){
   $('input[name=postal_code]').val(postal_code);
   $('input[name=city]').val(city);
   $.ajax({
-    url: 'http://localhost:8080/UserController/DataKurir',
+    url: '/UserController/DataKurir',
     type: 'POST',
     success: function(e){
       $('select[name=kurir]').html(e)
@@ -211,8 +214,9 @@ $('select[name=kota]').on('change',function(){
 $('select[name=kurir]').on('change',function(){
   $('#pilihan_kurir').show();
   $.ajax({
-    url: 'http://localhost:8080/UserController/DataCost',
+    url: '/UserController/DataCost',
     type: 'POST',
+    async: false,
     data: {
       tujuan: kota,
       berat: '<?= $berat;?>',
